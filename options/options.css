@@ -1,3 +1,52 @@
+body {
+	padding: 1rem !important;
+	display: grid;
+	gap: 0.5rem;
+	grid-auto-rows: max-content;
+}
+
+.add-site {
+	position: relative;
+
+	width: 100%;
+}
+
+#add-site__input {
+	border: 1px solid black;
+	height: 2rem;
+	padding: 0.25rem 1rem;
+	border-radius: 0.75rem;
+	width: 100%;
+}
+
+#add-site__button {
+	position: absolute;
+	height: 1.5rem;
+	right: 0.5rem;
+	padding: 0.25rem 0.5rem;
+	border-radius: 0.25rem;
+	top: calc(50% - 0.75rem);
+	background-color: #0000;
+	margin: 0;
+
+	color: red;
+}
+
+#add-site__button:disabled {
+	background-color: black;
+	color: gray;
+}
+
+.add-site__error {
+	color: red;
+	transition: 0.2s all;
+}
+
+.add-site__error:empty {
+	opacity: 0;
+	transform: translateY(-100%);
+}
+
 #site-list {
 	padding: 0.5rem;
 	display: grid;

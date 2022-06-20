@@ -1,23 +1,37 @@
-let button = document.getElementById("submit");
+const startRegExp = /https?:\/\/|www\./;
 
-const startRegExp = /https:\/\/|http:\/\/|www./g;
+const button = document.getElementById("submit");
+
+let url;
 
 const clearUrl = (link) => {
 	const newLink = link.replace(startRegExp, "");
-	return newLink.substring(0, newLink.indexOf("/"));
+	const index = newLink.indexOf("/");
+	if (index !== -1) {
+		return newLink.substring(0, newLink.indexOf("/"));
+	}
+	return newLink;
 };
 
-const disabledButton = (message) => {
+const isIncludeSite = (site_list = []) =>
+	site_list.some((site) => url.includes(site));
+
+function disabledButton(message) {
 	button.setAttribute("disabled", "");
 	button.innerHTML = message;
-};
+}
+
+function activeButton(message) {
+	button.removeAttribute("disabled");
+	button.innerHTML = message;
+}
 
 chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-	const url = clearUrl(tabs[0].url);
+	url = clearUrl(tabs[0].url);
 
 	button.addEventListener("click", () => {
 		chrome.storage.sync.get("site_list", (result) => {
-			if (result.site_list.some((item) => url.includes(item))) {
+			if (isIncludeSite(result?.site_list)) {
 				return;
 			}
 			chrome.storage.sync.set({ site_list: [...result.site_list, url] }, () => {
@@ -25,10 +39,18 @@ chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
 			});
 		});
 	});
+});
 
-	chrome.storage.sync.get("site_list", ({ site_list }) => {
-		if (site_list.some((site) => url.includes(site))) {
-			disabledButton("Already added!");
-		}
-	});
+chrome.storage.sync.get("site_list", ({ site_list }) => {
+	if (site_list.some((site) => url.includes(site))) {
+		disabledButton("Already added!");
+	}
+});
+
+chrome.storage.onChanged.addListener((changes) => {
+	const list = changes?.site_list?.newValue;
+	if (isIncludeSite(list)) {
+		return disabledButton("Already added!");
+	}
+	activeButton("Add this site.");
 });

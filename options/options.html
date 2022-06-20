@@ -5,7 +5,15 @@
 		<link rel="stylesheet" href="reset.css" />
 	</head>
 	<body>
+		<div class="add-site">
+			<input id="add-site__input" type="url" placeholder="Enter site url" />
+			<button id="add-site__button">Add</button>
+		</div>
+		<span class="add-site__error"></span>
+
 		<div id="site-list"></div>
-		<script src="options.js"></script>
+		<script src="scripts/input.js"></script>
+		<script src="scripts/load-sites.js"></script>
+		<script src="../utils.js"></script>
 	</body>
 </html>
