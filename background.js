@@ -8,4 +8,14 @@ chrome.runtime.onInstalled.addListener(() => {
 			site_list: [],
 		});
 	});
+
+	chrome.storage.sync.get("timeline", (data) => {
+		if (Array.isArray(data.timeline)) {
+			return;
+		}
+
+		chrome.storage.sync.set({
+			timeline: [],
+		});
+	});
 });

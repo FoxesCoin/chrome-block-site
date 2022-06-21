@@ -13,8 +13,7 @@ const clearUrl = (link) => {
 	return newLink;
 };
 
-const isIncludeSite = (site_list = []) =>
-	site_list.some((site) => url.includes(site));
+const isIncludeSite = (sites = []) => sites.some((site) => url.includes(site));
 
 function disabledButton(message) {
 	button.setAttribute("disabled", "");
@@ -30,25 +29,28 @@ chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
 	url = clearUrl(tabs[0].url);
 
 	button.addEventListener("click", () => {
-		chrome.storage.sync.get("site_list", (result) => {
-			if (isIncludeSite(result?.site_list)) {
+		getSiteList((sites) => {
+			if (isIncludeSite(sites)) {
 				return;
 			}
-			chrome.storage.sync.set({ site_list: [...result.site_list, url] }, () => {
+			setSiteList([...sites, url], () => {
 				disabledButton("Completed!");
 			});
 		});
 	});
 });
 
-chrome.storage.sync.get("site_list", ({ site_list }) => {
-	if (site_list.some((site) => url.includes(site))) {
+getSiteList((sites) => {
+	if (sites.some((site) => url.includes(site))) {
 		disabledButton("Already added!");
 	}
 });
 
 chrome.storage.onChanged.addListener((changes) => {
 	const list = changes?.site_list?.newValue;
+	if (!list) {
+		return;
+	}
 	if (isIncludeSite(list)) {
 		return disabledButton("Already added!");
 	}

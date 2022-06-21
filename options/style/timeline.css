@@ -1,0 +1,50 @@
+#timeline {
+	display: grid;
+	row-gap: 0.5rem;
+	border: 1px solid #fff;
+}
+
+.timeline {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+}
+
+.timeline__timer {
+	display: flex;
+	align-items: center;
+}
+
+.timeline__title,
+.timeline__separator {
+	font-weight: bold;
+	font-size: 1.1em;
+}
+
+.timeline__time {
+	border: 1px solid #fff;
+	padding: 0.25rem 0.5rem;
+	font-weight: bold;
+	font-size: 1.1em;
+}
+
+.timeline__day {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border: 2px solid #fff;
+	width: 2rem;
+	height: 2rem;
+	border-radius: 50%;
+	font-weight: bold;
+}
+
+.timeline__day.timeline__day_active {
+	background-color: #128585;
+}
+
+.timeline__weekdays {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+}

@@ -1,12 +1,13 @@
 const list = document.getElementById("site-list");
+const timeline = document.getElementById("timeline");
 
 function removeSiteFromList(site) {
-	chrome.storage.sync.get("site_list", (result) => {
-		const newSites = result?.site_list?.filter((item) => item !== site);
+	getSiteList((sites) => {
+		const newSites = sites.filter((item) => item !== site);
 		list.innerHTML = "";
 		newSites.forEach(addSiteToList);
 
-		chrome.storage.sync.set({ site_list: newSites });
+		setSiteList(newSites);
 	});
 }
 
@@ -31,13 +32,32 @@ function addSiteToList(site) {
 	list.appendChild(item);
 }
 
-function loadSites() {
-	chrome.storage.sync.get("site_list", (result) => {
+function updateStorage(data) {
+	if (data?.site_list) {
+		getSiteList((sites) => {
+			list.innerHTML = "";
+			sites.forEach(addSiteToList);
+		});
+	}
+	if (data?.timeline) {
+		getTimeline((timeline_data) => {
+			timeline.innerHTML = "";
+			timeline_data.forEach(addTime);
+		});
+	}
+}
+
+function loadData(data) {
+	getSiteList((sites) => {
 		list.innerHTML = "";
-		result?.site_list?.forEach(addSiteToList);
+		sites.forEach(addSiteToList);
+	});
+	getTimeline((timeline_data) => {
+		timeline.innerHTML = "";
+		timeline_data.forEach(addTime);
 	});
 }
 
-chrome.storage.onChanged.addListener(loadSites);
+chrome.storage.onChanged.addListener(updateStorage);
 
-loadSites();
+loadData();

@@ -8,10 +8,10 @@ const CSS = `<style>
 	justify-content: center;
 	align-items: center;
 
-	color: white;
+	color: #fff;
 	font-size: 4rem;
 	font-weight: bold;
-	background-color: black;
+	background-color: #000;
 
 	position: fixed;
 	top: 0;
@@ -38,8 +38,6 @@ function clearDocument() {
 
 chrome.storage.onChanged.addListener((changes) => {
 	const list = changes?.site_list?.newValue ?? [];
-
-	console.log(list);
 
 	if (isIncludeSite(list)) {
 		return clearDocument();
