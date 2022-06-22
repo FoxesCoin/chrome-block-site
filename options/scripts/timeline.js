@@ -23,7 +23,7 @@ function createTimer(time) {
 	timer.classList = "timeline__timer";
 
 	const separator = document.createElement("span");
-	separator.classList = "timeline__separator";
+	separator.classList = "title";
 	separator.innerHTML = "to";
 
 	const startTime = createTime(start);
@@ -56,15 +56,13 @@ function createWeekly(time) {
 	item.className = "timeline";
 
 	const title = document.createElement("span");
-	title.className = "timeline__title";
+	title.className = "title";
 	title.innerHTML = "Weekly";
 
-	const timer = createTimer(time);
 	const weeklyTimeline = createWeeklyTimeline(time.days);
 
 	item.appendChild(title);
 	item.appendChild(weeklyTimeline);
-	item.appendChild(timer);
 
 	return item;
 }
@@ -74,24 +72,31 @@ function createDaily(time) {
 	item.className = "timeline";
 
 	const title = document.createElement("span");
-	title.className = "timeline__title";
+	title.className = "title";
 	title.innerHTML = "Daily";
 
 	const days = document.createElement("span");
-	days.className = "timeline__title";
+	days.className = "timeline__daily";
 	days.innerHTML = `repeat ${time.day > 1 ? `every ${time.day}` : "everyday"}`;
-
-	const timer = createTimer(time);
 
 	item.appendChild(title);
 	item.appendChild(days);
-	item.appendChild(timer);
 
 	return item;
 }
 
 function addTime(time) {
 	const item = time.days ? createWeekly(time) : createDaily(time);
+
+	const timer = createTimer(time);
+	const cross = document.createElement("img");
+	cross.classList = "site__cross";
+	cross.src = "icon/cross.svg";
+	cross.alt = "Remove icon";
+
+	cross.addEventListener("click", () => removeTimeline(time));
+	item.appendChild(timer);
+	item.appendChild(cross);
 
 	timeline.appendChild(item);
 }

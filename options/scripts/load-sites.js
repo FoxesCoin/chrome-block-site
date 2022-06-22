@@ -1,10 +1,10 @@
-const list = document.getElementById("site-list");
+const siteList = document.getElementById("site-list");
 const timeline = document.getElementById("timeline");
 
 function removeSiteFromList(site) {
 	getSiteList((sites) => {
 		const newSites = sites.filter((item) => item !== site);
-		list.innerHTML = "";
+		siteList.innerHTML = "";
 		newSites.forEach(addSiteToList);
 
 		setSiteList(newSites);
@@ -29,13 +29,13 @@ function addSiteToList(site) {
 	item.appendChild(text);
 	item.appendChild(cross);
 
-	list.appendChild(item);
+	siteList.appendChild(item);
 }
 
 function updateStorage(data) {
 	if (data?.site_list) {
 		getSiteList((sites) => {
-			list.innerHTML = "";
+			siteList.innerHTML = "";
 			sites.forEach(addSiteToList);
 		});
 	}
@@ -49,7 +49,7 @@ function updateStorage(data) {
 
 function loadData(data) {
 	getSiteList((sites) => {
-		list.innerHTML = "";
+		siteList.innerHTML = "";
 		sites.forEach(addSiteToList);
 	});
 	getTimeline((timeline_data) => {

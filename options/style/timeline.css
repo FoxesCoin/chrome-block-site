@@ -1,7 +1,14 @@
 #timeline {
 	display: grid;
-	row-gap: 0.5rem;
+	row-gap: 1rem;
 	border: 1px solid #fff;
+	padding: 0.5rem 1rem;
+	border-radius: 0.5rem;
+	min-height: 3rem;
+
+	max-height: 250px;
+	overflow: auto;
+	grid-auto-rows: max-content;
 }
 
 .timeline {
@@ -10,22 +17,25 @@
 	gap: 0.5rem;
 }
 
+.timeline__daily {
+	border-radius: 0.25rem;
+	padding: 0.25rem 0.5rem;
+	background-color: #128585;
+	font-weight: bold;
+}
+
 .timeline__timer {
 	display: flex;
 	align-items: center;
-}
-
-.timeline__title,
-.timeline__separator {
-	font-weight: bold;
-	font-size: 1.1em;
+	gap: 0.5rem;
 }
 
 .timeline__time {
-	border: 1px solid #fff;
+	border-radius: 0.25rem;
 	padding: 0.25rem 0.5rem;
+	background-color: burlywood;
+	font-size: 1.5rem;
 	font-weight: bold;
-	font-size: 1.1em;
 }
 
 .timeline__day {

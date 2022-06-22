@@ -12,136 +12,155 @@
 		<link rel="stylesheet" href="style/reset.css" />
 		<link rel="stylesheet" href="style/time.css" />
 		<link rel="stylesheet" href="style/timeline.css" />
+		<link rel="stylesheet" href="style/add-site.css" />
+		<link rel="stylesheet" href="style/site-list.css" />
 	</head>
 	<body>
-		<div class="add-site">
-			<input id="add-site__input" type="url" placeholder="Enter site url" />
-			<button id="add-site__button">Add</button>
+		<div>
+			<div class="add-site">
+				<input id="add-site__input" type="url" placeholder="Enter site url" />
+				<button id="add-site__button">Add</button>
+			</div>
+			<span class="add-site__error"></span>
 		</div>
-		<span class="add-site__error"></span>
 
-		<form class="form" id="weekly-form">
-			<div class="form__title">Time:</div>
-			<div class="time">
-				<input
-					class="time__input time__start"
-					type="time"
-					value="00:00"
-					name="start"
-				/>
-
-				<span class="time__separator">to</span>
-
-				<input
-					class="time__input time__end"
-					type="time"
-					value="23:59"
-					name="end"
-				/>
-			</div>
-			<div class="form__title">Choose days:</div>
-			<div class="calendar">
-				<label class="day">
-					<input
-						class="day__checkbox"
-						type="checkbox"
-						name="day"
-						value="Monday"
-					/>
-					<span class="day__text">M</span>
-				</label>
-				<label class="day">
-					<input
-						class="day__checkbox"
-						type="checkbox"
-						name="day"
-						value="Tuesday"
-					/>
-					<span class="day__text">T</span>
-				</label>
-				<label class="day">
-					<input
-						class="day__checkbox"
-						type="checkbox"
-						name="day"
-						value="Wednesday"
-					/>
-					<span class="day__text">W</span>
-				</label>
-				<label class="day">
-					<input
-						class="day__checkbox"
-						type="checkbox"
-						name="day"
-						value="Thursday"
-					/>
-					<span class="day__text">T</span>
-				</label>
-				<label class="day">
-					<input
-						class="day__checkbox"
-						type="checkbox"
-						name="day"
-						value="Friday"
-					/>
-					<span class="day__text">F</span>
-				</label>
-				<label class="day">
-					<input
-						class="day__checkbox"
-						type="checkbox"
-						name="day"
-						value="Saturday"
-					/>
-					<span class="day__text">S</span>
-				</label>
-				<label class="day">
-					<input
-						class="day__checkbox"
-						type="checkbox"
-						name="day"
-						value="Sunday"
-					/>
-					<span class="day__text">S</span>
-				</label>
+		<main>
+			<div class="tab">
+				<span class="tab__item tab__item_active">Weekly</span>
+				<span class="tab__item">Daily</span>
 			</div>
 
-			<button type="submit" class="form__submit">Add time</button>
-		</form>
+			<form class="form form_active" id="weekly-form">
+				<div class="form__title">Time:</div>
+				<div class="time">
+					<input
+						class="time__input time__start"
+						type="time"
+						value="00:00"
+						name="start"
+					/>
 
-		<form class="form" id="daily-form">
-			<div class="form__title">Time:</div>
-			<div class="time">
-				<input
-					class="time__input time__start"
-					type="time"
-					value="00:00"
-					name="start"
-				/>
+					<span class="title">to</span>
 
-				<span class="time__separator">to</span>
+					<input
+						class="time__input time__end"
+						type="time"
+						value="23:59"
+						name="end"
+					/>
+				</div>
+				<div class="form__title">Choose days:</div>
+				<div class="calendar">
+					<label class="day">
+						<input
+							class="day__checkbox"
+							type="checkbox"
+							name="day"
+							value="Monday"
+						/>
+						<span class="day__text">M</span>
+					</label>
+					<label class="day">
+						<input
+							class="day__checkbox"
+							type="checkbox"
+							name="day"
+							value="Tuesday"
+						/>
+						<span class="day__text">T</span>
+					</label>
+					<label class="day">
+						<input
+							class="day__checkbox"
+							type="checkbox"
+							name="day"
+							value="Wednesday"
+						/>
+						<span class="day__text">W</span>
+					</label>
+					<label class="day">
+						<input
+							class="day__checkbox"
+							type="checkbox"
+							name="day"
+							value="Thursday"
+						/>
+						<span class="day__text">T</span>
+					</label>
+					<label class="day">
+						<input
+							class="day__checkbox"
+							type="checkbox"
+							name="day"
+							value="Friday"
+						/>
+						<span class="day__text">F</span>
+					</label>
+					<label class="day">
+						<input
+							class="day__checkbox"
+							type="checkbox"
+							name="day"
+							value="Saturday"
+						/>
+						<span class="day__text">S</span>
+					</label>
+					<label class="day">
+						<input
+							class="day__checkbox"
+							type="checkbox"
+							name="day"
+							value="Sunday"
+						/>
+						<span class="day__text">S</span>
+					</label>
+				</div>
 
-				<input
-					class="time__input time__end"
-					type="time"
-					value="23:59"
-					name="end"
-				/>
-			</div>
+				<button type="submit" class="form__submit">Add time</button>
+			</form>
 
-			<div class="form__title">Days:</div>
-			<input class="time__day" type="number" min="1" value="1" name="day" />
+			<form class="form" id="daily-form">
+				<div class="form__title">Time:</div>
+				<div class="time">
+					<input
+						class="time__input time__start"
+						type="time"
+						value="00:00"
+						name="start"
+					/>
 
-			<button type="submit" class="form__submit">Add time</button>
-		</form>
+					<span class="title">to</span>
 
-		<div id="timeline"></div>
+					<input
+						class="time__input time__end"
+						type="time"
+						value="23:59"
+						name="end"
+					/>
+				</div>
 
-		<div id="site-list"></div>
+				<div class="form__title">Days:</div>
+				<input class="time__day" type="number" min="1" value="1" name="day" />
+
+				<button type="submit" class="form__submit">Add time</button>
+			</form>
+		</main>
+
+		<fieldset>
+			<legend class="title">Timelines</legend>
+			<div id="timeline"></div>
+		</fieldset>
+
+		<fieldset>
+			<legend class="title">Site list</legend>
+			<div id="site-list"></div>
+		</fieldset>
+
 		<script src="../utils.js"></script>
 		<script src="scripts/timeline.js"></script>
 		<script src="scripts/input.js"></script>
 		<script src="scripts/load-sites.js"></script>
 		<script src="scripts/time.js"></script>
+		<script src="scripts/tab.js"></script>
 	</body>
 </html>

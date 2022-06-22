@@ -25,25 +25,19 @@ weeklyForm.addEventListener("submit", (event) => {
 		return;
 	}
 
-	updateTimeline((oldTimeline) => [
-		{
-			start: data.get("start"),
-			end: data.get("end"),
-			days: data.getAll("day"),
-		},
-		...oldTimeline,
-	]);
+	addTimeline({
+		start: data.get("start"),
+		end: data.get("end"),
+		days: data.getAll("day"),
+	});
 });
 
 dailyForm.addEventListener("submit", (event) => {
 	const data = new FormData(event.target);
 
-	updateTimeline((oldTimeline) => [
-		{
-			start: data.get("start"),
-			end: data.get("end"),
-			day: data.get("day"),
-		},
-		...oldTimeline,
-	]);
+	addTimeline({
+		start: data.get("start"),
+		end: data.get("end"),
+		day: data.get("day"),
+	});
 });
