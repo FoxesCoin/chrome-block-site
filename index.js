@@ -37,12 +37,15 @@ function clearDocument() {
 }
 
 chrome.storage.onChanged.addListener((changes) => {
-	const list = changes?.site_list?.newValue ?? [];
+	const newList = changes?.site_list?.newValue ?? [];
+	const oldList = changes?.site_list?.oldValue ?? [];
 
-	if (isIncludeSite(list)) {
+	if (isIncludeSite(newList)) {
 		return clearDocument();
 	}
-	location.reload();
+	if (isIncludeSite(oldList)) {
+		return location.reload();
+	}
 });
 
 document.addEventListener("DOMContentLoaded", clearDocument);
