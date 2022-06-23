@@ -1,11 +1,11 @@
 const WEEK_DAYS = [
-	"Monday",
-	"Tuesday",
-	"Wednesday",
-	"Thursday",
-	"Friday",
-	"Saturday",
-	"Sunday",
+	{ value: 0, letter: "M" },
+	{ value: 1, letter: "T" },
+	{ value: 2, letter: "W" },
+	{ value: 3, letter: "T" },
+	{ value: 4, letter: "F" },
+	{ value: 5, letter: "S" },
+	{ value: 6, letter: "S" },
 ];
 
 function createTime(time) {
@@ -40,11 +40,11 @@ function createWeeklyTimeline(weekdays) {
 	const days = document.createElement("div");
 	days.className = "timeline__weekdays";
 
-	WEEK_DAYS.forEach((weekday) => {
+	WEEK_DAYS.forEach(({ value, letter }) => {
 		const day = document.createElement("span");
-		const isActive = weekdays.includes(weekday);
+		const isActive = weekdays.some((day) => +day === value);
 		day.className = `timeline__day ${isActive ? "timeline__day_active" : ""}`;
-		day.innerHTML = weekday[0].toUpperCase();
+		day.innerHTML = letter;
 		days.appendChild(day);
 	});
 

@@ -6,7 +6,7 @@ const formSupport = (form) => {
 	const end = form.querySelector(".time__end");
 
 	start.addEventListener("input", () => {
-		const date = new Date(Date.parse(`1970-01-01T${start.value}:00`));
+		const date = createDateByTime(start.value);
 		date.setMinutes(date.getMinutes() + 1);
 
 		end.setAttribute("min", `${date.getHours()}:${date.getMinutes()}`);
@@ -39,5 +39,6 @@ dailyForm.addEventListener("submit", (event) => {
 		start: data.get("start"),
 		end: data.get("end"),
 		day: data.get("day"),
+		startDate: createToday(),
 	});
 });

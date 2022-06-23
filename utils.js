@@ -74,8 +74,6 @@ const addTimeline = (newTimeline) =>
 
 const removeTimeline = (newTimeline) =>
 	getTimeline((oldTimelines) => {
-		console.log();
-
 		const newList = oldTimelines.filter((timeline) =>
 			isWeekly(newTimeline)
 				? isWeekly(timeline)
