@@ -32,30 +32,27 @@ function addSiteToList(site) {
 	siteList.appendChild(item);
 }
 
+function loadTimelines(timelines) {
+	timeline.innerHTML = "";
+	timelines.forEach(addHtmlTimelines);
+}
+function loadSites(sites) {
+	siteList.innerHTML = "";
+	sites.forEach(addSiteToList);
+}
+
 function updateStorage(data) {
-	if (data?.site_list) {
-		getSiteList((sites) => {
-			siteList.innerHTML = "";
-			sites.forEach(addSiteToList);
-		});
+	if (data?.sites?.newValue) {
+		loadSites(data.sites.newValue);
 	}
-	if (data?.timeline) {
-		getTimeline((timeline_data) => {
-			timeline.innerHTML = "";
-			timeline_data.forEach(addTime);
-		});
+	if (data?.timeline?.newValue) {
+		loadTimelines(data.timeline.newValue);
 	}
 }
 
-function loadData(data) {
-	getSiteList((sites) => {
-		siteList.innerHTML = "";
-		sites.forEach(addSiteToList);
-	});
-	getTimeline((timeline_data) => {
-		timeline.innerHTML = "";
-		timeline_data.forEach(addTime);
-	});
+function loadData() {
+	getTimeline(loadTimelines);
+	getSiteList(loadSites);
 }
 
 chrome.storage.onChanged.addListener(updateStorage);

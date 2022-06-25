@@ -85,7 +85,7 @@ function createDaily(time) {
 	return item;
 }
 
-function addTime(time) {
+function addHtmlTimelines(time) {
 	const item = time.days ? createWeekly(time) : createDaily(time);
 
 	const timer = createTimer(time);

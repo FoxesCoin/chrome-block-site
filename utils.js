@@ -37,21 +37,21 @@ const isExistTimeline = (newTimeline, oldTimelines) =>
 		: isExistDailyTimeline(newTimeline, oldTimelines);
 
 const getSiteList = (getData) =>
-	chrome.storage.sync.get("site_list", (data) => {
-		getData(data?.site_list ?? []);
+	chrome.storage.sync.get("sites", (data) => {
+		getData(data?.sites ?? []);
 	});
 
 const setSiteList = (data, callback) =>
 	chrome.storage.sync.set(
 		{
-			site_list: data,
+			sites: data,
 		},
 		callback
 	);
 
 const getTimeline = (getData) =>
-	chrome.storage.sync.get("timeline", (data) => {
-		getData(data?.timeline ?? []);
+	chrome.storage.sync.get("timelines", (data) => {
+		getData(data?.timelines ?? []);
 	});
 
 const setTimeline = (data, callback) =>

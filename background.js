@@ -1,21 +1,21 @@
 chrome.runtime.onInstalled.addListener(() => {
-	chrome.storage.sync.get("site_list", (data) => {
-		if (Array.isArray(data.site_list)) {
+	chrome.storage.sync.get("sites", (data) => {
+		if (Array.isArray(data?.sites)) {
 			return;
 		}
 
 		chrome.storage.sync.set({
-			site_list: [],
+			sites: [],
 		});
 	});
 
-	chrome.storage.sync.get("timeline", (data) => {
-		if (Array.isArray(data.timeline)) {
+	chrome.storage.sync.get("timelines", (data) => {
+		if (Array.isArray(data?.timelines)) {
 			return;
 		}
 
 		chrome.storage.sync.set({
-			timeline: [],
+			timelines: [],
 		});
 	});
 });

@@ -47,7 +47,7 @@ getSiteList((sites) => {
 });
 
 chrome.storage.onChanged.addListener((changes) => {
-	const list = changes?.site_list?.newValue;
+	const list = changes?.sites?.newValue;
 	if (!list) {
 		return;
 	}
