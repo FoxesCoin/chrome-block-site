@@ -45,16 +45,16 @@ function updateStorage(data) {
 	if (data?.sites?.newValue) {
 		loadSites(data.sites.newValue);
 	}
-	if (data?.timeline?.newValue) {
-		loadTimelines(data.timeline.newValue);
+	if (data?.timelines?.newValue) {
+		loadTimelines(data.timelines.newValue);
 	}
 }
 
 function loadData() {
-	getTimeline(loadTimelines);
+	getTimelines(loadTimelines);
 	getSiteList(loadSites);
 }
 
 chrome.storage.onChanged.addListener(updateStorage);
 
-loadData();
+document.addEventListener("DOMContentLoaded", loadData);

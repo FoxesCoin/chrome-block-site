@@ -81,8 +81,9 @@ const isIncludesToday = (timeline) =>
 	isWeekly(timeline) ? isIncludeWeekly(timeline) : isIncludeDaily(timeline);
 
 function checkActiveTodayBlock(callback) {
-	chrome.storage.sync.get("timelines", ({ timelines }) => {
-		const isHaveActiveTimeline = timelines?.some(isIncludesToday) ?? false;
+	chrome.storage.sync.get("timelines", (data) => {
+		const isHaveActiveTimeline =
+			data?.timelines?.some(isIncludesToday) ?? false;
 		callback(isHaveActiveTimeline);
 	});
 }
@@ -118,8 +119,8 @@ function loadDocument() {
 chrome.storage.onChanged.addListener((changes) => {
 	const newSites = changes?.sites?.newValue ?? [];
 	const oldSites = changes?.sites?.oldValue ?? [];
-	const newTimelines = changes?.timeline?.newValue ?? [];
-	const oldTimelines = changes?.timeline?.oldValue ?? [];
+	const newTimelines = changes?.timelines?.newValue ?? [];
+	const oldTimelines = changes?.timelines?.oldValue ?? [];
 
 	// Is the new timeline active now?
 	if (newTimelines.length > oldTimelines.length) {

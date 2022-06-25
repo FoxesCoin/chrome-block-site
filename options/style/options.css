@@ -1,5 +1,6 @@
 body {
 	padding: 1rem !important;
+	margin: 0 auto !important;
 	display: grid;
 	font-size: 16px;
 	row-gap: 1rem;
@@ -9,7 +10,6 @@ body {
 	color: #fff;
 	font-family: "Roboto", sans-serif;
 
-	margin: 0 auto;
 	max-width: 1000px;
 }
 

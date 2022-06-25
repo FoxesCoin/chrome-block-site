@@ -1,7 +1,7 @@
 const isMatchDays = (first, second) => {
 	if (first.length !== second.length) return false;
 
-	for (var i = 0; i < first.length; i++) {
+	for (let i = 0; i < first.length; i++) {
 		if (first[i] !== second[i]) return false;
 	}
 
@@ -36,45 +36,50 @@ const isExistTimeline = (newTimeline, oldTimelines) =>
 		? isExistWeeklyTimeline(newTimeline, oldTimelines)
 		: isExistDailyTimeline(newTimeline, oldTimelines);
 
-const getSiteList = (getData) =>
+const getSiteList = (getData) => {
 	chrome.storage.sync.get("sites", (data) => {
 		getData(data?.sites ?? []);
 	});
+};
 
-const setSiteList = (data, callback) =>
+const setSiteList = (data, callback) => {
 	chrome.storage.sync.set(
 		{
 			sites: data,
 		},
 		callback
 	);
+};
 
-const getTimeline = (getData) =>
+const getTimelines = (getData) => {
 	chrome.storage.sync.get("timelines", (data) => {
 		getData(data?.timelines ?? []);
 	});
+};
 
-const setTimeline = (data, callback) =>
+const setTimelines = (data, callback) => {
 	chrome.storage.sync.set(
 		{
-			timeline: data,
+			timelines: data,
 		},
 		callback
 	);
+};
 
-const addTimeline = (newTimeline) =>
-	getTimeline((oldTimelines) => {
+function addTimeline(newTimeline) {
+	getTimelines((oldTimelines) => {
 		if (isExistTimeline(newTimeline, oldTimelines)) {
 			return alert("This timeline already exist!");
 		}
 
 		const newTimelines = [newTimeline, ...oldTimelines];
-		setTimeline(newTimelines);
+		setTimelines(newTimelines);
 	});
+}
 
-const removeTimeline = (newTimeline) =>
-	getTimeline((oldTimelines) => {
-		const newList = oldTimelines.filter((timeline) =>
+function removeTimeline(newTimeline) {
+	getTimelines((oldTimelines) => {
+		const newTimelines = oldTimelines.filter((timeline) =>
 			isWeekly(newTimeline)
 				? isWeekly(timeline)
 					? !isEqualWeekly(timeline, newTimeline)
@@ -84,5 +89,6 @@ const removeTimeline = (newTimeline) =>
 				: !isEqualDaily(timeline, newTimeline)
 		);
 
-		setTimeline(newList);
+		setTimelines(newTimelines);
 	});
+}

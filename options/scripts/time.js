@@ -17,11 +17,11 @@ formSupport(weeklyForm);
 formSupport(dailyForm);
 
 weeklyForm.addEventListener("submit", (event) => {
+	event.preventDefault();
 	const data = new FormData(event.target);
 
 	if (!data.getAll("day").length) {
 		alert("You should select minimum one day!");
-		event.preventDefault();
 		return;
 	}
 
@@ -30,9 +30,11 @@ weeklyForm.addEventListener("submit", (event) => {
 		end: data.get("end"),
 		days: data.getAll("day"),
 	});
+	weeklyForm.reset();
 });
 
 dailyForm.addEventListener("submit", (event) => {
+	event.preventDefault();
 	const data = new FormData(event.target);
 
 	addTimeline({
@@ -41,4 +43,5 @@ dailyForm.addEventListener("submit", (event) => {
 		day: data.get("day"),
 		startDate: createToday(),
 	});
+	dailyForm.reset();
 });

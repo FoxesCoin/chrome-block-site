@@ -1,6 +1,6 @@
 const startRegExp = /https?:\/\/|www\./;
 
-const button = document.getElementById("submit");
+const button = document.getElementById("add-site");
 
 let url;
 
