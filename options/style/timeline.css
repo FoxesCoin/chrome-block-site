@@ -1,14 +1,35 @@
 #timeline {
 	display: grid;
 	row-gap: 1rem;
-	border: 1px solid #fff;
-	padding: 0.5rem 1rem;
 	border-radius: 0.5rem;
 	min-height: 3rem;
 
 	max-height: 250px;
 	overflow: auto;
 	grid-auto-rows: max-content;
+}
+
+.timeline {
+	position: relative;
+}
+
+.default-message {
+	display: none;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+
+	font-weight: bold;
+	font-size: 2rem;
+	color: #f00;
+}
+
+#timeline:empty ~ .default-message {
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 .timeline {

@@ -31,89 +31,134 @@
 			</div>
 
 			<form class="form form_active" id="weekly-form">
-				<div class="form__title">Time:</div>
-				<div class="time">
-					<input
-						class="time__input time__start"
-						type="time"
-						value="00:00"
-						name="start"
-					/>
+				<div class="form__time">
+					<span class="form__title">Time:</span>
+					<div class="time">
+						<input
+							class="time__input time__start"
+							type="time"
+							value="00:00"
+							name="start"
+						/>
 
-					<span class="title">to</span>
+						<span class="title">to</span>
 
-					<input
-						class="time__input time__end"
-						type="time"
-						value="23:59"
-						name="end"
-					/>
+						<input
+							class="time__input time__end"
+							type="time"
+							value="23:59"
+							name="end"
+						/>
+					</div>
 				</div>
-				<div class="form__title">Choose days:</div>
-				<div class="calendar">
-					<label class="day">
-						<input class="day__checkbox" type="checkbox" name="day" value="0" />
-						<span class="day__text">M</span>
-					</label>
-					<label class="day">
-						<input class="day__checkbox" type="checkbox" name="day" value="1" />
-						<span class="day__text">T</span>
-					</label>
-					<label class="day">
-						<input class="day__checkbox" type="checkbox" name="day" value="2" />
-						<span class="day__text">W</span>
-					</label>
-					<label class="day">
-						<input class="day__checkbox" type="checkbox" name="day" value="3" />
-						<span class="day__text">T</span>
-					</label>
-					<label class="day">
-						<input class="day__checkbox" type="checkbox" name="day" value="4" />
-						<span class="day__text">F</span>
-					</label>
-					<label class="day">
-						<input class="day__checkbox" type="checkbox" name="day" value="5" />
-						<span class="day__text">S</span>
-					</label>
-					<label class="day">
-						<input class="day__checkbox" type="checkbox" name="day" value="6" />
-						<span class="day__text">S</span>
-					</label>
+				<div class="form__input">
+					<span class="form__title">Choose days:</span>
+					<div class="calendar">
+						<label class="day">
+							<input
+								class="day__checkbox"
+								type="checkbox"
+								name="day"
+								value="0"
+							/>
+							<span class="day__text">M</span>
+						</label>
+						<label class="day">
+							<input
+								class="day__checkbox"
+								type="checkbox"
+								name="day"
+								value="1"
+							/>
+							<span class="day__text">T</span>
+						</label>
+						<label class="day">
+							<input
+								class="day__checkbox"
+								type="checkbox"
+								name="day"
+								value="2"
+							/>
+							<span class="day__text">W</span>
+						</label>
+						<label class="day">
+							<input
+								class="day__checkbox"
+								type="checkbox"
+								name="day"
+								value="3"
+							/>
+							<span class="day__text">T</span>
+						</label>
+						<label class="day">
+							<input
+								class="day__checkbox"
+								type="checkbox"
+								name="day"
+								value="4"
+							/>
+							<span class="day__text">F</span>
+						</label>
+						<label class="day">
+							<input
+								class="day__checkbox"
+								type="checkbox"
+								name="day"
+								value="5"
+							/>
+							<span class="day__text">S</span>
+						</label>
+						<label class="day">
+							<input
+								class="day__checkbox"
+								type="checkbox"
+								name="day"
+								value="6"
+							/>
+							<span class="day__text">S</span>
+						</label>
+					</div>
 				</div>
-
 				<button type="submit" class="form__submit">Add time</button>
 			</form>
 
 			<form class="form" id="daily-form">
-				<div class="form__title">Time:</div>
-				<div class="time">
-					<input
-						class="time__input time__start"
-						type="time"
-						value="00:00"
-						name="start"
-					/>
+				<div class="form__time">
+					<span class="form__title">Time:</span>
+					<div class="time">
+						<input
+							class="time__input time__start"
+							type="time"
+							value="00:00"
+							name="start"
+						/>
 
-					<span class="title">to</span>
+						<span class="title">to</span>
 
-					<input
-						class="time__input time__end"
-						type="time"
-						value="23:59"
-						name="end"
-					/>
+						<input
+							class="time__input time__end"
+							type="time"
+							value="23:59"
+							name="end"
+						/>
+					</div>
 				</div>
 
-				<div class="form__title">Days:</div>
-				<input class="time__day" type="number" min="1" value="1" name="day" />
+				<div class="form__input">
+					<span class="form__title">Days:</span>
+					<input class="time__day" type="number" min="1" value="1" name="day" />
+				</div>
 
 				<button type="submit" class="form__submit">Add time</button>
 			</form>
 		</main>
 
-		<fieldset>
+		<fieldset class="timeline">
 			<legend class="title">Timelines</legend>
 			<div id="timeline"></div>
+			<div class="default-message">
+				If you not select any timeline, then whole day will be block
+			</div>
 		</fieldset>
 
 		<fieldset>

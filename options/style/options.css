@@ -4,7 +4,7 @@ body {
 	display: grid;
 	font-size: 16px;
 	row-gap: 1rem;
-	grid-template-rows: max-content max-content max-content 1fr;
+	grid-template-rows: max-content 160px max-content 1fr;
 
 	background-color: #000;
 	color: #fff;
@@ -20,6 +20,7 @@ body {
 
 .tab {
 	display: flex;
+	height: 40px;
 }
 
 .tab__item {
