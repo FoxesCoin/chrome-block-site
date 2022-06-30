@@ -70,11 +70,8 @@ const isIncludeDaily = (daily) => {
 
 	const isActiveDay =
 		+daily.day > 1 ? diffDays(startDate, today) % +daily.day === 0 : true;
-	if (!isActiveDay) {
-		return false;
-	}
 
-	return isTimeBetweenInterval(daily);
+	return isActiveDay && isTimeBetweenInterval(daily);
 };
 
 const isIncludesToday = (timeline) =>
@@ -82,8 +79,11 @@ const isIncludesToday = (timeline) =>
 
 function checkActiveTodayBlock(callback) {
 	chrome.storage.sync.get("timelines", (data) => {
-		const isHaveActiveTimeline =
-			data?.timelines?.some(isIncludesToday) ?? false;
+		const timelines = data?.timelines;
+		//* If we don't have any active timeline then block site.
+		const isHaveActiveTimeline = !!timelines?.length
+			? timelines.some(isIncludesToday)
+			: true;
 		callback(isHaveActiveTimeline);
 	});
 }
@@ -102,16 +102,24 @@ function blockSiteByTime() {
 	});
 }
 
+let intervalId;
+const activateSiteTimer = () => {
+	blockSiteByTime();
+	if (intervalId) {
+		clearInterval(intervalId);
+	}
+	intervalId = setInterval(() => {
+		blockSiteByTime();
+	}, MILLISECOND_IN_MINUTE);
+};
+
 function loadDocument() {
 	if (!document?.body) {
 		return console.error("Too early!");
 	}
 	checkSiteList((isInclude) => {
 		if (isInclude) {
-			blockSiteByTime();
-			setInterval(() => {
-				blockSiteByTime();
-			}, MILLISECOND_IN_MINUTE);
+			activateSiteTimer();
 		}
 	});
 }
@@ -122,7 +130,16 @@ chrome.storage.onChanged.addListener((changes) => {
 	const newTimelines = changes?.timelines?.newValue ?? [];
 	const oldTimelines = changes?.timelines?.oldValue ?? [];
 
-	// Is the new timeline active now?
+	//? Is all timelines remove? Then block all sites
+	if (newTimelines.length === 0 && oldTimelines.length > 0) {
+		checkSiteList((isInclude) => {
+			if (isInclude) {
+				clearDocument();
+			}
+		});
+	}
+
+	//? Is the new timeline active now?
 	if (newTimelines.length > oldTimelines.length) {
 		if (!isIncludesToday(newTimelines[0])) {
 			return;
@@ -135,22 +152,22 @@ chrome.storage.onChanged.addListener((changes) => {
 
 		return;
 	}
-	// Did you add this site?
+	//? Did you add this site?
 	if (newSites.length > oldSites.length && isIncludeSite(newSites)) {
-		return blockSiteByTime();
+		return activateSiteTimer();
 	}
-	//Did you remove this site?
+	//? Did you remove this site?
 	if (oldSites.length > newSites.length && isIncludeSite(oldSites)) {
 		return location.reload();
 	}
-	// Is it removed timeline?
+	//? Is it removed timeline?
 	if (oldTimelines.length > newTimelines.length) {
 		checkActiveTodayBlock((isActiveToday) => {
-			// Are we have  active block now?
+			//? Are we have  active block now?
 			if (isActiveToday) {
 				return;
 			}
-			// Did the removed timeline have a block?
+			//? Did the removed timeline have a block?
 			const isHaveActiveTimeline = oldTimelines.some(isIncludesToday);
 			if (!isHaveActiveTimeline) {
 				return;
