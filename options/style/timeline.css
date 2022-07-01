@@ -1,12 +1,15 @@
 #timeline {
+	overflow: auto;
+	max-height: 250px;
+	border-radius: 0.5rem;
+
 	display: grid;
 	row-gap: 1rem;
-	border-radius: 0.5rem;
-	min-height: 3rem;
-
-	max-height: 250px;
-	overflow: auto;
 	grid-auto-rows: max-content;
+}
+
+#timeline:empty {
+	height: 3rem;
 }
 
 .timeline {
