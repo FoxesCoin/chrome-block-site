@@ -1,8 +1,8 @@
 const isMatchDays = (first, second) => {
 	if (first.length !== second.length) return false;
 
-	for (let i = 0; i < first.length; i++) {
-		if (first[i] !== second[i]) return false;
+	for (let index = 0; index < first.length; index++) {
+		if (first[index] !== second[index]) return false;
 	}
 
 	return true;
@@ -37,13 +37,13 @@ const isExistTimeline = (newTimeline, oldTimelines) =>
 		: isExistDailyTimeline(newTimeline, oldTimelines);
 
 const getSiteList = (getData) => {
-	chrome.storage.sync.get("sites", (data) => {
+	chrome.storage.local.get("sites", (data) => {
 		getData(data?.sites ?? []);
 	});
 };
 
 const setSiteList = (data, callback) => {
-	chrome.storage.sync.set(
+	chrome.storage.local.set(
 		{
 			sites: data,
 		},
@@ -52,13 +52,13 @@ const setSiteList = (data, callback) => {
 };
 
 const getTimelines = (getData) => {
-	chrome.storage.sync.get("timelines", (data) => {
+	chrome.storage.local.get("timelines", (data) => {
 		getData(data?.timelines ?? []);
 	});
 };
 
 const setTimelines = (data, callback) => {
-	chrome.storage.sync.set(
+	chrome.storage.local.set(
 		{
 			timelines: data,
 		},

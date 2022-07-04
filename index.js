@@ -1,7 +1,9 @@
-const host = window.location.hostname;
+const HOST = window.location.hostname;
+
+const MILLISECOND_IN_MINUTE = 60 * 1000;
+const MILLISECOND_IN_DAY = 24 * 60 * MILLISECOND_IN_MINUTE;
 
 const HTML = `<div class="message">Return to work</div>`;
-
 const CSS = `<style>
 .message {
 	display: flex;
@@ -22,7 +24,7 @@ const CSS = `<style>
 </style>`;
 
 const isWeekly = (timeline) => !!timeline?.days;
-const isIncludeSite = (sites) => sites.some((site) => host.includes(site));
+const isIncludeSite = (sites) => sites.some((site) => HOST.includes(site));
 
 function clearDocument() {
 	document.body.innerHTML = HTML;
@@ -39,8 +41,6 @@ const createDateByTime = (time) => {
 	return date;
 };
 
-const MILLISECOND_IN_MINUTE = 60 * 1000;
-const MILLISECOND_IN_DAY = 24 * 60 * MILLISECOND_IN_MINUTE;
 const diffDays = (first, second) => {
 	var timeFirst = first.getTime();
 	var timeSecond = second.getTime();
@@ -59,7 +59,7 @@ const isTimeBetweenInterval = (timer) => {
 const isIncludeWeekly = (weekly) => {
 	const today = new Date();
 	const weekday = today.getDay();
-	const isActiveDay = weekly.days.includes(weekday);
+	const isActiveDay = weekly.days.some((day) => +day === weekday);
 
 	return isActiveDay && isTimeBetweenInterval(weekly);
 };
@@ -67,9 +67,9 @@ const isIncludeWeekly = (weekly) => {
 const isIncludeDaily = (daily) => {
 	const today = new Date();
 	const startDate = new Date(daily.startDate);
+	const day = +daily.day;
 
-	const isActiveDay =
-		+daily.day > 1 ? diffDays(startDate, today) % +daily.day === 0 : true;
+	const isActiveDay = day > 1 ? diffDays(startDate, today) % day === 0 : true;
 
 	return isActiveDay && isTimeBetweenInterval(daily);
 };
@@ -78,7 +78,7 @@ const isIncludesToday = (timeline) =>
 	isWeekly(timeline) ? isIncludeWeekly(timeline) : isIncludeDaily(timeline);
 
 function checkActiveTodayBlock(callback) {
-	chrome.storage.sync.get("timelines", (data) => {
+	chrome.storage.local.get("timelines", (data) => {
 		const timelines = data?.timelines;
 		//* If we don't have any active timeline then block site.
 		const isHaveActiveTimeline = !!timelines?.length
@@ -89,7 +89,7 @@ function checkActiveTodayBlock(callback) {
 }
 
 function checkSiteList(callback) {
-	chrome.storage.sync.get("sites", ({ sites }) => {
+	chrome.storage.local.get("sites", ({ sites }) => {
 		callback(isIncludeSite(sites));
 	});
 }

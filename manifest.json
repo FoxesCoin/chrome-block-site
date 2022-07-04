@@ -3,9 +3,9 @@
 	"name": "Chrome Block Site",
 	"version": "0.0.1",
 	"permissions": ["tabs", "storage"],
-	"options_page": "options/options.html",
+	"options_page": "src/options/options.html",
 	"action": {
-		"default_popup": "popup/popup.html"
+		"default_popup": "src/popup/popup.html"
 	},
 	"background": {
 		"service_worker": "background.js"
