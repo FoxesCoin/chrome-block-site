@@ -1,3 +1,6 @@
+import { removeTimeline } from "../../utils";
+import { timeline } from "./utils";
+
 const WEEK_DAYS = [
 	{ value: 0, letter: "M" },
 	{ value: 1, letter: "T" },
@@ -8,7 +11,7 @@ const WEEK_DAYS = [
 	{ value: 6, letter: "S" },
 ];
 
-function createTime(time) {
+function createTime(time: any) {
 	const timer = document.createElement("span");
 	timer.className = "timeline__time";
 	timer.innerHTML = time;
@@ -16,14 +19,14 @@ function createTime(time) {
 	return timer;
 }
 
-function createTimer(time) {
+function createTimer(time: any) {
 	const { start, end } = time;
 
-	const timer = document.createElement("div");
-	timer.classList = "timeline__timer";
+	const timer = document.createElement("div")!;
+	timer.classList.add("timeline__timer");
 
 	const separator = document.createElement("span");
-	separator.classList = "title";
+	separator.classList.add("title");
 	separator.innerHTML = "to";
 
 	const startTime = createTime(start);
@@ -36,13 +39,13 @@ function createTimer(time) {
 	return timer;
 }
 
-function createWeeklyTimeline(weekdays) {
+function createWeeklyTimeline(weekdays: any) {
 	const days = document.createElement("div");
 	days.className = "timeline__weekdays";
 
 	WEEK_DAYS.forEach(({ value, letter }) => {
 		const day = document.createElement("span");
-		const isActive = weekdays.some((day) => +day === value);
+		const isActive = weekdays.some((day: any) => +day === value);
 		day.className = `timeline__day ${isActive ? "timeline__day_active" : ""}`;
 		day.innerHTML = letter;
 		days.appendChild(day);
@@ -51,7 +54,7 @@ function createWeeklyTimeline(weekdays) {
 	return days;
 }
 
-function createWeekly(time) {
+function createWeekly(time: any) {
 	const item = document.createElement("div");
 	item.className = "timeline";
 
@@ -67,7 +70,7 @@ function createWeekly(time) {
 	return item;
 }
 
-function createDaily(time) {
+function createDaily(time: any) {
 	const item = document.createElement("div");
 	item.className = "timeline";
 
@@ -85,13 +88,13 @@ function createDaily(time) {
 	return item;
 }
 
-function addHtmlTimelines(time) {
+export function addHtmlTimelines(time: any) {
 	const item = time.days ? createWeekly(time) : createDaily(time);
 
 	const timer = createTimer(time);
 	const cross = document.createElement("img");
-	cross.classList = "site__cross";
-	cross.src = "icon/cross.svg";
+	cross.classList.add("site__cross");
+	cross.src = "../assets/cross.svg";
 	cross.alt = "Remove icon";
 
 	cross.addEventListener("click", () => removeTimeline(time));

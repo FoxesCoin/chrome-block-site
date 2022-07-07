@@ -1,9 +1,10 @@
-const siteList = document.getElementById("site-list");
-const timeline = document.getElementById("timeline");
+import { getSiteList, getTimelines, setSiteList } from "../../utils";
+import { addHtmlTimelines } from "./timeline";
+import { siteList, timeline } from "./utils";
 
-function removeSiteFromList(site) {
-	getSiteList((sites) => {
-		const newSites = sites.filter((item) => item !== site);
+function removeSiteFromList(site: any) {
+	getSiteList((sites: any) => {
+		const newSites = sites.filter((item: any) => item !== site);
 		siteList.innerHTML = "";
 		newSites.forEach(addSiteToList);
 
@@ -11,7 +12,7 @@ function removeSiteFromList(site) {
 	});
 }
 
-function addSiteToList(site) {
+function addSiteToList(site: any) {
 	const item = document.createElement("div");
 	item.className = "site";
 
@@ -20,8 +21,8 @@ function addSiteToList(site) {
 	text.innerHTML = site;
 
 	const cross = document.createElement("img");
-	cross.classList = "site__cross";
-	cross.src = "icon/cross.svg";
+	cross.classList.add("site__cross");
+	cross.src = "../assets/cross.svg";
 	cross.alt = "Remove icon";
 
 	cross.addEventListener("click", () => removeSiteFromList(site));
@@ -32,16 +33,16 @@ function addSiteToList(site) {
 	siteList.appendChild(item);
 }
 
-function loadTimelines(timelines) {
+function loadTimelines(timelines: any) {
 	timeline.innerHTML = "";
 	timelines.forEach(addHtmlTimelines);
 }
-function loadSites(sites) {
+function loadSites(sites: any) {
 	siteList.innerHTML = "";
 	sites.forEach(addSiteToList);
 }
 
-function updateStorage(data) {
+function updateStorage(data: any) {
 	if (data?.sites?.newValue) {
 		loadSites(data.sites.newValue);
 	}

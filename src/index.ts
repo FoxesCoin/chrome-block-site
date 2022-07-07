@@ -1,10 +1,12 @@
+import { isWeekly } from "./utils";
+
 const HOST = window.location.hostname;
 
 const MILLISECOND_IN_MINUTE = 60 * 1000;
 const MILLISECOND_IN_DAY = 24 * 60 * MILLISECOND_IN_MINUTE;
 
 const HTML = `<div class="message">Return to work</div>`;
-const CSS = `<style>
+const HEADER = `<style>
 .message {
 	display: flex;
 	justify-content: center;
@@ -23,15 +25,15 @@ const CSS = `<style>
 }
 </style>`;
 
-const isWeekly = (timeline) => !!timeline?.days;
-const isIncludeSite = (sites) => sites.some((site) => HOST.includes(site));
+const isIncludeSite = (sites: any) =>
+	sites.some((site: any) => HOST.includes(site));
 
 function clearDocument() {
 	document.body.innerHTML = HTML;
-	document.head.innerHTML = CSS;
+	document.head.innerHTML = HEADER;
 }
 
-const createDateByTime = (time) => {
+const createDateByTime = (time: any) => {
 	const [hour, minute] = time.split(":");
 	const date = new Date();
 	date.setHours(+hour);
@@ -41,14 +43,14 @@ const createDateByTime = (time) => {
 	return date;
 };
 
-const diffDays = (first, second) => {
+const diffDays = (first: any, second: any) => {
 	var timeFirst = first.getTime();
 	var timeSecond = second.getTime();
 
 	return Math.floor((timeSecond - timeFirst) / MILLISECOND_IN_DAY);
 };
 
-const isTimeBetweenInterval = (timer) => {
+const isTimeBetweenInterval = (timer: any) => {
 	const start = createDateByTime(timer.start).getTime();
 	const end = createDateByTime(timer.end).getTime();
 	const todayTime = Date.now();
@@ -56,15 +58,15 @@ const isTimeBetweenInterval = (timer) => {
 	return todayTime - start >= 0 && todayTime - end <= 0;
 };
 
-const isIncludeWeekly = (weekly) => {
+const isIncludeWeekly = (weekly: any) => {
 	const today = new Date();
 	const weekday = today.getDay();
-	const isActiveDay = weekly.days.some((day) => +day === weekday);
+	const isActiveDay = weekly.days.some((day: any) => +day === weekday);
 
 	return isActiveDay && isTimeBetweenInterval(weekly);
 };
 
-const isIncludeDaily = (daily) => {
+const isIncludeDaily = (daily: any) => {
 	const today = new Date();
 	const startDate = new Date(daily.startDate);
 	const day = +daily.day;
@@ -74,10 +76,10 @@ const isIncludeDaily = (daily) => {
 	return isActiveDay && isTimeBetweenInterval(daily);
 };
 
-const isIncludesToday = (timeline) =>
+const isIncludesToday = (timeline: any) =>
 	isWeekly(timeline) ? isIncludeWeekly(timeline) : isIncludeDaily(timeline);
 
-function checkActiveTodayBlock(callback) {
+function checkActiveTodayBlock(callback: any) {
 	chrome.storage.local.get("timelines", (data) => {
 		const timelines = data?.timelines;
 		//* If we don't have any active timeline then block site.
@@ -88,21 +90,21 @@ function checkActiveTodayBlock(callback) {
 	});
 }
 
-function checkSiteList(callback) {
+function checkSiteList(callback: any) {
 	chrome.storage.local.get("sites", ({ sites }) => {
 		callback(isIncludeSite(sites));
 	});
 }
 
 function blockSiteByTime() {
-	checkActiveTodayBlock((isActiveToday) => {
+	checkActiveTodayBlock((isActiveToday: any) => {
 		if (isActiveToday) {
 			clearDocument();
 		}
 	});
 }
 
-let intervalId;
+let intervalId: any;
 const activateSiteTimer = () => {
 	blockSiteByTime();
 	if (intervalId) {
@@ -117,7 +119,7 @@ function loadDocument() {
 	if (!document?.body) {
 		return console.error("Too early!");
 	}
-	checkSiteList((isInclude) => {
+	checkSiteList((isInclude: any) => {
 		if (isInclude) {
 			activateSiteTimer();
 		}
@@ -132,7 +134,7 @@ chrome.storage.onChanged.addListener((changes) => {
 
 	//? Is all timelines remove? Then block all sites
 	if (newTimelines.length === 0 && oldTimelines.length > 0) {
-		checkSiteList((isInclude) => {
+		checkSiteList((isInclude: any) => {
 			if (isInclude) {
 				clearDocument();
 			}
@@ -144,7 +146,7 @@ chrome.storage.onChanged.addListener((changes) => {
 		if (!isIncludesToday(newTimelines[0])) {
 			return;
 		}
-		checkSiteList((isInclude) => {
+		checkSiteList((isInclude: any) => {
 			if (isInclude) {
 				clearDocument();
 			}
@@ -162,7 +164,7 @@ chrome.storage.onChanged.addListener((changes) => {
 	}
 	//? Is it removed timeline?
 	if (oldTimelines.length > newTimelines.length) {
-		checkActiveTodayBlock((isActiveToday) => {
+		checkActiveTodayBlock((isActiveToday: any) => {
 			//? Are we have  active block now?
 			if (isActiveToday) {
 				return;
@@ -172,7 +174,7 @@ chrome.storage.onChanged.addListener((changes) => {
 			if (!isHaveActiveTimeline) {
 				return;
 			}
-			checkSiteList((isInclude) => {
+			checkSiteList((isInclude: any) => {
 				if (isInclude) {
 					location.reload();
 				}

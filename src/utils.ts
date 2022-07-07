@@ -1,4 +1,4 @@
-const isMatchDays = (first, second) => {
+export const isMatchDays = (first: any, second: any) => {
 	if (first.length !== second.length) return false;
 
 	for (let index = 0; index < first.length; index++) {
@@ -8,41 +8,43 @@ const isMatchDays = (first, second) => {
 	return true;
 };
 
-const isWeekly = (timeline) => !!timeline?.days;
+export const isWeekly = (timeline: any) => !!timeline?.days;
 
-const isEqualTime = (first, second) =>
+export const isEqualTime = (first: any, second: any) =>
 	first.start === second.start && second.end === first.end;
 
-const isEqualWeekly = (first, second) => {
+export const isEqualWeekly = (first: any, second: any) => {
 	const firstDays = first.days.sort();
 	const secondDays = second.days.sort();
 	return isEqualTime(first, second) && isMatchDays(firstDays, secondDays);
 };
-const isEqualDaily = (first, second) =>
+export const isEqualDaily = (first: any, second: any) =>
 	isEqualTime(first, second) && first.day === second.day;
 
-const isExistWeeklyTimeline = (newTimeline, oldTimelines) =>
+export const isExistWeeklyTimeline = (newTimeline: any, oldTimelines: any) =>
 	oldTimelines.some(
-		(timeline) => isWeekly(timeline) && isEqualWeekly(newTimeline, timeline)
+		(timeline: any) =>
+			isWeekly(timeline) && isEqualWeekly(newTimeline, timeline)
 	);
 
-const isExistDailyTimeline = (newTimeline, oldTimelines) =>
+export const isExistDailyTimeline = (newTimeline: any, oldTimelines: any) =>
 	oldTimelines.some(
-		(timeline) => !isWeekly(timeline) && isEqualDaily(newTimeline, timeline)
+		(timeline: any) =>
+			!isWeekly(timeline) && isEqualDaily(newTimeline, timeline)
 	);
 
-const isExistTimeline = (newTimeline, oldTimelines) =>
+export const isExistTimeline = (newTimeline: any, oldTimelines: any) =>
 	isWeekly(newTimeline)
 		? isExistWeeklyTimeline(newTimeline, oldTimelines)
 		: isExistDailyTimeline(newTimeline, oldTimelines);
 
-const getSiteList = (getData) => {
+export const getSiteList = (getData: any) => {
 	chrome.storage.local.get("sites", (data) => {
 		getData(data?.sites ?? []);
 	});
 };
 
-const setSiteList = (data, callback) => {
+export const setSiteList = (data: any, callback?: any) => {
 	chrome.storage.local.set(
 		{
 			sites: data,
@@ -51,13 +53,13 @@ const setSiteList = (data, callback) => {
 	);
 };
 
-const getTimelines = (getData) => {
+export const getTimelines = (getData: any) => {
 	chrome.storage.local.get("timelines", (data) => {
 		getData(data?.timelines ?? []);
 	});
 };
 
-const setTimelines = (data, callback) => {
+export const setTimelines = (data: any, callback?: any) => {
 	chrome.storage.local.set(
 		{
 			timelines: data,
@@ -66,8 +68,8 @@ const setTimelines = (data, callback) => {
 	);
 };
 
-function addTimeline(newTimeline) {
-	getTimelines((oldTimelines) => {
+export function addTimeline(newTimeline: any) {
+	getTimelines((oldTimelines: any) => {
 		if (isExistTimeline(newTimeline, oldTimelines)) {
 			return alert("This timeline already exist!");
 		}
@@ -77,9 +79,9 @@ function addTimeline(newTimeline) {
 	});
 }
 
-function removeTimeline(newTimeline) {
-	getTimelines((oldTimelines) => {
-		const newTimelines = oldTimelines.filter((timeline) =>
+export function removeTimeline(newTimeline: any) {
+	getTimelines((oldTimelines: any) => {
+		const newTimelines = oldTimelines.filter((timeline: any) =>
 			isWeekly(newTimeline)
 				? isWeekly(timeline)
 					? !isEqualWeekly(timeline, newTimeline)

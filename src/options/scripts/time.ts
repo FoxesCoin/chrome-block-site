@@ -1,7 +1,7 @@
-const weeklyForm = document.getElementById("weekly-form");
-const dailyForm = document.getElementById("daily-form");
+import { addTimeline } from "./../../utils";
+import { createDateByTime, createToday, dailyForm, weeklyForm } from "./utils";
 
-const formSupport = (form) => {
+const formSupport = (form: any) => {
 	const start = form.querySelector(".time__start");
 	const end = form.querySelector(".time__end");
 
@@ -18,7 +18,10 @@ formSupport(dailyForm);
 
 weeklyForm.addEventListener("submit", (event) => {
 	event.preventDefault();
-	const data = new FormData(event.target);
+	if (!event.target) {
+		return;
+	}
+	const data = new FormData(event.target as any);
 
 	if (!data.getAll("day").length) {
 		alert("You should select minimum one day!");
@@ -35,7 +38,10 @@ weeklyForm.addEventListener("submit", (event) => {
 
 dailyForm.addEventListener("submit", (event) => {
 	event.preventDefault();
-	const data = new FormData(event.target);
+	if (!event.target) {
+		return;
+	}
+	const data = new FormData(event.target as any);
 
 	addTimeline({
 		start: data.get("start"),
