@@ -1,10 +1,10 @@
-import { getSiteList, getTimelines, setSiteList } from "../../utils";
+import { getSiteList, getTimelines, setSiteList, Timeline } from "../../utils";
 import { addHtmlTimelines } from "./timeline";
 import { siteList, timeline } from "./utils";
 
-function removeSiteFromList(site: any) {
-	getSiteList((sites: any) => {
-		const newSites = sites.filter((item: any) => item !== site);
+function removeSiteFromList(site: string) {
+	getSiteList((sites) => {
+		const newSites = sites.filter((item) => item !== site);
 		siteList.innerHTML = "";
 		newSites.forEach(addSiteToList);
 
@@ -12,7 +12,7 @@ function removeSiteFromList(site: any) {
 	});
 }
 
-function addSiteToList(site: any) {
+function addSiteToList(site: string) {
 	const item = document.createElement("div");
 	item.className = "site";
 
@@ -33,22 +33,13 @@ function addSiteToList(site: any) {
 	siteList.appendChild(item);
 }
 
-function loadTimelines(timelines: any) {
+function loadTimelines(timelines: Timeline[]) {
 	timeline.innerHTML = "";
 	timelines.forEach(addHtmlTimelines);
 }
-function loadSites(sites: any) {
+function loadSites(sites: string[]) {
 	siteList.innerHTML = "";
 	sites.forEach(addSiteToList);
-}
-
-function updateStorage(data: any) {
-	if (data?.sites?.newValue) {
-		loadSites(data.sites.newValue);
-	}
-	if (data?.timelines?.newValue) {
-		loadTimelines(data.timelines.newValue);
-	}
 }
 
 function loadData() {
@@ -56,6 +47,13 @@ function loadData() {
 	getSiteList(loadSites);
 }
 
-chrome.storage.onChanged.addListener(updateStorage);
+chrome.storage.onChanged.addListener((data) => {
+	if (data?.sites?.newValue) {
+		loadSites(data.sites.newValue);
+	}
+	if (data?.timelines?.newValue) {
+		loadTimelines(data.timelines.newValue);
+	}
+});
 
 document.addEventListener("DOMContentLoaded", loadData);

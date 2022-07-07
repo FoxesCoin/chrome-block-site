@@ -1,5 +1,12 @@
-import { removeTimeline } from "../../utils";
-import { timeline } from "./utils";
+import {
+	Daily,
+	isWeekly,
+	removeTimeline,
+	Timeline,
+	Timer,
+	Weekly,
+} from "../../utils";
+import { timeline as timelinesList } from "./utils";
 
 const WEEK_DAYS = [
 	{ value: 0, letter: "M" },
@@ -11,7 +18,7 @@ const WEEK_DAYS = [
 	{ value: 6, letter: "S" },
 ];
 
-function createTime(time: any) {
+function createTime(time: string) {
 	const timer = document.createElement("span");
 	timer.className = "timeline__time";
 	timer.innerHTML = time;
@@ -19,7 +26,7 @@ function createTime(time: any) {
 	return timer;
 }
 
-function createTimer(time: any) {
+function createTimer(time: Timer) {
 	const { start, end } = time;
 
 	const timer = document.createElement("div")!;
@@ -39,13 +46,13 @@ function createTimer(time: any) {
 	return timer;
 }
 
-function createWeeklyTimeline(weekdays: any) {
+function createWeeklyTimeline(weekdays: number[]) {
 	const days = document.createElement("div");
 	days.className = "timeline__weekdays";
 
 	WEEK_DAYS.forEach(({ value, letter }) => {
 		const day = document.createElement("span");
-		const isActive = weekdays.some((day: any) => +day === value);
+		const isActive = weekdays.some((day) => day === value);
 		day.className = `timeline__day ${isActive ? "timeline__day_active" : ""}`;
 		day.innerHTML = letter;
 		days.appendChild(day);
@@ -54,7 +61,7 @@ function createWeeklyTimeline(weekdays: any) {
 	return days;
 }
 
-function createWeekly(time: any) {
+function createWeekly(time: Weekly) {
 	const item = document.createElement("div");
 	item.className = "timeline";
 
@@ -70,7 +77,7 @@ function createWeekly(time: any) {
 	return item;
 }
 
-function createDaily(time: any) {
+function createDaily(time: Daily) {
 	const item = document.createElement("div");
 	item.className = "timeline";
 
@@ -80,7 +87,7 @@ function createDaily(time: any) {
 
 	const days = document.createElement("span");
 	days.className = "timeline__daily";
-	days.innerHTML = `repeat ${time.day > 1 ? `every ${time.day}` : "everyday"}`;
+	days.innerHTML = `repeat ${+time.day > 1 ? `every ${time.day}` : "everyday"}`;
 
 	item.appendChild(title);
 	item.appendChild(days);
@@ -88,18 +95,20 @@ function createDaily(time: any) {
 	return item;
 }
 
-export function addHtmlTimelines(time: any) {
-	const item = time.days ? createWeekly(time) : createDaily(time);
+export function addHtmlTimelines(timeline: Timeline) {
+	const item = isWeekly(timeline)
+		? createWeekly(timeline)
+		: createDaily(timeline);
 
-	const timer = createTimer(time);
+	const timer = createTimer(timeline);
 	const cross = document.createElement("img");
 	cross.classList.add("site__cross");
 	cross.src = "../assets/cross.svg";
 	cross.alt = "Remove icon";
 
-	cross.addEventListener("click", () => removeTimeline(time));
+	cross.addEventListener("click", () => removeTimeline(timeline));
 	item.appendChild(timer);
 	item.appendChild(cross);
 
-	timeline.appendChild(item);
+	timelinesList.appendChild(item);
 }

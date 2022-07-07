@@ -1,9 +1,13 @@
-import { addTimeline } from "./../../utils";
+import { addTimeline, Daily, Nullable, Weekly } from "./../../utils";
 import { createDateByTime, createToday, dailyForm, weeklyForm } from "./utils";
 
-const formSupport = (form: any) => {
-	const start = form.querySelector(".time__start");
-	const end = form.querySelector(".time__end");
+const formSupport = (form: HTMLFormElement) => {
+	const start = form.querySelector(".time__start") as HTMLInputElement;
+	const end = form.querySelector(".time__end") as HTMLInputElement;
+
+	if (!start || !end) {
+		return console.error("Form element not found");
+	}
 
 	start.addEventListener("input", () => {
 		const date = createDateByTime(start.value);
@@ -18,35 +22,60 @@ formSupport(dailyForm);
 
 weeklyForm.addEventListener("submit", (event) => {
 	event.preventDefault();
+
 	if (!event.target) {
 		return;
 	}
-	const data = new FormData(event.target as any);
 
-	if (!data.getAll("day").length) {
-		alert("You should select minimum one day!");
-		return;
+	const data = new FormData(event.target as HTMLFormElement);
+	const days = data.getAll("day").map((day) => +day);
+
+	if (!days.length) {
+		return alert("You should select minimum one day!");
 	}
 
-	addTimeline({
+	const time = {
 		start: data.get("start"),
 		end: data.get("end"),
-		days: data.getAll("day"),
-	});
+	};
+
+	if (!time.start || !time.end) {
+		throw new Error("Time not found");
+	}
+
+	addTimeline({ days, ...time } as Weekly);
 	weeklyForm.reset();
 });
 
+type DailyFormData = Nullable<Omit<Daily, "startDate">>;
+type DailyFormCorrectData = Record<keyof DailyFormData, string>;
 dailyForm.addEventListener("submit", (event) => {
 	event.preventDefault();
+
 	if (!event.target) {
 		return;
 	}
-	const data = new FormData(event.target as any);
 
-	addTimeline({
+	const data = new FormData(event.target as HTMLFormElement);
+
+	const timeline = {
 		start: data.get("start"),
 		end: data.get("end"),
 		day: data.get("day"),
+	} as DailyFormData;
+
+	Object.entries(timeline).filter(([_, value]) => value !== null);
+
+	if (
+		timeline.day === null ||
+		timeline.end === null ||
+		timeline.start === null
+	) {
+		throw new Error("Daily form filed data not found!. Check field value.");
+	}
+
+	addTimeline({
+		...(timeline as DailyFormCorrectData),
 		startDate: createToday(),
 	});
 	dailyForm.reset();

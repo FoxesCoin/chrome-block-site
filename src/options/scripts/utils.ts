@@ -8,7 +8,7 @@ export const createToday = () => {
 	return today.toUTCString();
 };
 
-export const createDateByTime = (time: any) => {
+export const createDateByTime = (time: string) => {
 	const [hour, minute] = time.split(":");
 	const date = new Date();
 	date.setHours(+hour);

@@ -1,4 +1,24 @@
-export const isMatchDays = (first: any, second: any) => {
+export type Nullable<T> = {
+	[P in keyof T]: T[P] | null;
+};
+
+export interface Timer {
+	start: string;
+	end: string;
+}
+
+export interface Daily extends Timer {
+	day: string;
+	startDate: string;
+}
+
+export interface Weekly extends Timer {
+	days: number[];
+}
+
+export type Timeline = Daily | Weekly;
+
+export const isMatchDays = (first: number[], second: number[]) => {
 	if (first.length !== second.length) return false;
 
 	for (let index = 0; index < first.length; index++) {
@@ -8,43 +28,41 @@ export const isMatchDays = (first: any, second: any) => {
 	return true;
 };
 
-export const isWeekly = (timeline: any) => !!timeline?.days;
+export const isWeekly = (timeline: any): timeline is Weekly => !!timeline?.days;
 
-export const isEqualTime = (first: any, second: any) =>
+const isEqualTime = (first: Timer, second: Timer): boolean =>
 	first.start === second.start && second.end === first.end;
 
-export const isEqualWeekly = (first: any, second: any) => {
+const isEqualWeekly = (first: Weekly, second: Weekly) => {
 	const firstDays = first.days.sort();
 	const secondDays = second.days.sort();
 	return isEqualTime(first, second) && isMatchDays(firstDays, secondDays);
 };
-export const isEqualDaily = (first: any, second: any) =>
+const isEqualDaily = (first: Daily, second: Daily) =>
 	isEqualTime(first, second) && first.day === second.day;
 
-export const isExistWeeklyTimeline = (newTimeline: any, oldTimelines: any) =>
+const isExistWeeklyTimeline = (newTimeline: Weekly, oldTimelines: Timeline[]) =>
 	oldTimelines.some(
-		(timeline: any) =>
-			isWeekly(timeline) && isEqualWeekly(newTimeline, timeline)
+		(timeline) => isWeekly(timeline) && isEqualWeekly(newTimeline, timeline)
 	);
 
-export const isExistDailyTimeline = (newTimeline: any, oldTimelines: any) =>
+const isExistDailyTimeline = (newTimeline: Daily, oldTimelines: Timeline[]) =>
 	oldTimelines.some(
-		(timeline: any) =>
-			!isWeekly(timeline) && isEqualDaily(newTimeline, timeline)
+		(timeline) => !isWeekly(timeline) && isEqualDaily(newTimeline, timeline)
 	);
 
-export const isExistTimeline = (newTimeline: any, oldTimelines: any) =>
+const isExistTimeline = (newTimeline: Timeline, oldTimelines: Timeline[]) =>
 	isWeekly(newTimeline)
 		? isExistWeeklyTimeline(newTimeline, oldTimelines)
 		: isExistDailyTimeline(newTimeline, oldTimelines);
 
-export const getSiteList = (getData: any) => {
+export const getSiteList = (getData: (sites: string[]) => void) => {
 	chrome.storage.local.get("sites", (data) => {
 		getData(data?.sites ?? []);
 	});
 };
 
-export const setSiteList = (data: any, callback?: any) => {
+export const setSiteList = (data: string[], callback?: () => void) => {
 	chrome.storage.local.set(
 		{
 			sites: data,
@@ -53,13 +71,13 @@ export const setSiteList = (data: any, callback?: any) => {
 	);
 };
 
-export const getTimelines = (getData: any) => {
+export const getTimelines = (getData: (timelines: Timeline[]) => void) => {
 	chrome.storage.local.get("timelines", (data) => {
 		getData(data?.timelines ?? []);
 	});
 };
 
-export const setTimelines = (data: any, callback?: any) => {
+export const setTimelines = (data: Timeline[], callback?: () => void) => {
 	chrome.storage.local.set(
 		{
 			timelines: data,
@@ -68,8 +86,8 @@ export const setTimelines = (data: any, callback?: any) => {
 	);
 };
 
-export function addTimeline(newTimeline: any) {
-	getTimelines((oldTimelines: any) => {
+export function addTimeline(newTimeline: Timeline) {
+	getTimelines((oldTimelines) => {
 		if (isExistTimeline(newTimeline, oldTimelines)) {
 			return alert("This timeline already exist!");
 		}
@@ -79,9 +97,9 @@ export function addTimeline(newTimeline: any) {
 	});
 }
 
-export function removeTimeline(newTimeline: any) {
-	getTimelines((oldTimelines: any) => {
-		const newTimelines = oldTimelines.filter((timeline: any) =>
+export function removeTimeline(newTimeline: Timeline) {
+	getTimelines((oldTimelines) => {
+		const newTimelines = oldTimelines.filter((timeline) =>
 			isWeekly(newTimeline)
 				? isWeekly(timeline)
 					? !isEqualWeekly(timeline, newTimeline)
