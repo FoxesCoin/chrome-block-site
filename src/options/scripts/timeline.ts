@@ -1,11 +1,5 @@
-import {
-	Daily,
-	isWeekly,
-	removeTimeline,
-	Timeline,
-	Timer,
-	Weekly,
-} from "../../utils";
+import { ProfileManager } from "../../profile";
+import { Daily, isWeekly, Timeline, Timer, Weekly } from "../../utils";
 import { timeline as timelinesList } from "./utils";
 
 const WEEK_DAYS = [
@@ -106,7 +100,9 @@ export function addHtmlTimelines(timeline: Timeline) {
 	cross.src = "../assets/cross.svg";
 	cross.alt = "Remove icon";
 
-	cross.addEventListener("click", () => removeTimeline(timeline));
+	cross.addEventListener("click", () =>
+		ProfileManager.removeTimeline(timeline)
+	);
 	item.appendChild(timer);
 	item.appendChild(cross);
 

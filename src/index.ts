@@ -1,4 +1,5 @@
-import { Daily, isWeekly, Timeline, Timer, Weekly } from "./utils";
+import { ProfileManager } from "./profile";
+import { Daily, isWeekly, ProfileData, Timeline, Timer, Weekly } from "./utils";
 
 const HOST = window.location.hostname;
 
@@ -128,11 +129,19 @@ function loadDocument() {
 	});
 }
 
+// TODO update to profile functional
 chrome.storage.onChanged.addListener((changes) => {
-	const newSites = changes?.sites?.newValue ?? [];
-	const oldSites = changes?.sites?.oldValue ?? [];
-	const newTimelines = changes?.timelines?.newValue ?? [];
-	const oldTimelines = changes?.timelines?.oldValue ?? [];
+	const id = ProfileManager.idProfile;
+	const oldProfile = changes?.profiles.oldValue?.find(
+		(profile: ProfileData) => id === profile.id
+	);
+	const newProfile = changes?.profiles.newValue?.find(
+		(profile: ProfileData) => id === profile.id
+	);
+	const newSites = newProfile.sites;
+	const newTimelines = newProfile.timelines;
+	const oldSites = oldProfile.sites;
+	const oldTimelines = oldProfile.timelines;
 
 	//? Is all timelines remove? Then block all sites
 	if (newTimelines.length === 0 && oldTimelines.length > 0) {

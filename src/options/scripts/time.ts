@@ -1,6 +1,6 @@
-import { addTimeline, Daily, Nullable, Weekly } from "./../../utils";
+import { ProfileManager } from "../../profile";
+import { Daily, Nullable, Weekly } from "./../../utils";
 import { createDateByTime, createToday, dailyForm, weeklyForm } from "./utils";
-
 const formSupport = (form: HTMLFormElement) => {
 	const start = form.querySelector(".time__start") as HTMLInputElement;
 	const end = form.querySelector(".time__end") as HTMLInputElement;
@@ -43,7 +43,7 @@ weeklyForm.addEventListener("submit", (event) => {
 		throw new Error("Time not found");
 	}
 
-	addTimeline({ days, ...time } as Weekly);
+	ProfileManager.addTimeline({ days, ...time } as Weekly);
 	weeklyForm.reset();
 });
 
@@ -74,7 +74,7 @@ dailyForm.addEventListener("submit", (event) => {
 		throw new Error("Daily form filed data not found!. Check field value.");
 	}
 
-	addTimeline({
+	ProfileManager.addTimeline({
 		...(timeline as DailyFormCorrectData),
 		startDate: createToday(),
 	});

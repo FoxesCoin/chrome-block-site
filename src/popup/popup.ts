@@ -1,12 +1,13 @@
 import "./popup.css";
 
-import { getSiteList, setSiteList } from "../utils";
+import { ProfileManager } from "../profile";
+import { ProfileData } from "../utils";
 
-const startRegExp = /https?:\/\/|www\./;
+const startRegExp = /https?:\/\/|www\./i;
 
 const button = document.getElementById("add-site")!;
 
-let url: string | undefined;
+let url: string = "";
 
 const clearUrl = (link: string) => {
 	const newLink = link.replace(startRegExp, "");
@@ -18,7 +19,8 @@ const clearUrl = (link: string) => {
 };
 
 // @ts-ignore
-const isIncludeSite = (sites = []) => sites.some((site) => url.includes(site));
+const isIncludeSite = (sites: string[] = []) =>
+	sites.some((site) => url.includes(site));
 
 function disabledButton(message: string) {
 	button.setAttribute("disabled", "");
@@ -37,31 +39,30 @@ chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
 	}
 	url = clearUrl(tabUrl);
 
-	button.addEventListener("click", () => {
-		getSiteList((sites: any) => {
-			if (isIncludeSite(sites)) {
-				return;
-			}
-			setSiteList([...sites, url], () => {
-				disabledButton("Completed!");
-			});
-		});
+	button.addEventListener("click", async () => {
+		const sites = ProfileManager.activeProfile.sites;
+		if (isIncludeSite(sites)) {
+			return;
+		}
+		await ProfileManager.addSite(url);
+		disabledButton("Completed!");
 	});
 });
 
-getSiteList((sites: any) => {
-	if (sites.some((site: any) => url && url.includes(site))) {
-		disabledButton("Already added!");
-	}
-});
+// TODO update to profile functional
+chrome.storage.onChanged.addListener((change) => {
+	const id = ProfileManager.idProfile;
+	const list = change.profiles.newValue.find(
+		(profile: ProfileData) => profile.id === id
+	);
 
-chrome.storage.onChanged.addListener((changes) => {
-	const list = changes?.sites?.newValue;
-	if (!list) {
-		return;
-	}
 	if (isIncludeSite(list)) {
 		return disabledButton("Already added!");
 	}
 	activeButton("Add this site.");
 });
+
+const sites = ProfileManager.activeProfile.sites;
+if (sites.some((site: any) => url && url.includes(site))) {
+	disabledButton("Already added!");
+}

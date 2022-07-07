@@ -1,16 +1,7 @@
-import { getSiteList, getTimelines, setSiteList, Timeline } from "../../utils";
+import { ProfileManager } from "../../profile";
+import { ProfileData, Timeline } from "../../utils";
 import { addHtmlTimelines } from "./timeline";
 import { siteList, timeline } from "./utils";
-
-function removeSiteFromList(site: string) {
-	getSiteList((sites) => {
-		const newSites = sites.filter((item) => item !== site);
-		siteList.innerHTML = "";
-		newSites.forEach(addSiteToList);
-
-		setSiteList(newSites);
-	});
-}
 
 function addSiteToList(site: string) {
 	const item = document.createElement("div");
@@ -25,7 +16,7 @@ function addSiteToList(site: string) {
 	cross.src = "../assets/cross.svg";
 	cross.alt = "Remove icon";
 
-	cross.addEventListener("click", () => removeSiteFromList(site));
+	cross.addEventListener("click", () => ProfileManager.removeSite(site));
 
 	item.appendChild(text);
 	item.appendChild(cross);
@@ -42,18 +33,18 @@ function loadSites(sites: string[]) {
 	sites.forEach(addSiteToList);
 }
 
-function loadData() {
-	getTimelines(loadTimelines);
-	getSiteList(loadSites);
-}
-
-chrome.storage.onChanged.addListener((data) => {
-	if (data?.sites?.newValue) {
-		loadSites(data.sites.newValue);
-	}
-	if (data?.timelines?.newValue) {
-		loadTimelines(data.timelines.newValue);
-	}
+chrome.storage.onChanged.addListener((change) => {
+	const id = ProfileManager.idProfile;
+	const { timelines, sites } = change.profiles.newValue.find(
+		(profile: ProfileData) => profile.id === id
+	);
+	loadTimelines(timelines);
+	loadSites(sites);
 });
 
-document.addEventListener("DOMContentLoaded", loadData);
+document.addEventListener("DOMContentLoaded", async () => {
+	await ProfileManager.loadData();
+	const { sites, timelines } = ProfileManager.activeProfile;
+	loadTimelines(timelines);
+	loadSites(sites);
+});
