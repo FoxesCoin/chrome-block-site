@@ -4,6 +4,11 @@ export type Nullable<T> = {
 	[P in keyof T]: T[P] | null;
 };
 
+interface UpdateProfiles {
+	oldProfile: ProfileData;
+	newProfile: ProfileData;
+}
+
 export interface Timer {
 	start: string;
 	end: string;
@@ -28,16 +33,6 @@ export interface ProfileFields {
 export interface ProfileData extends ProfileFields {
 	readonly id: number;
 }
-
-export const isMatchDays = (first: number[], second: number[]): boolean => {
-	if (first.length !== second.length) return false;
-
-	for (let index = 0; index < first.length; index++) {
-		if (first[index] !== second[index]) return false;
-	}
-
-	return true;
-};
 
 export const isWeekly = (timeline: any): timeline is Weekly => !!timeline?.days;
 
@@ -79,3 +74,48 @@ export const setProfiles = (profiles: ProfileData[]) =>
 			reject(ex);
 		}
 	});
+
+export const createDateByTime = (time: string) => {
+	const [hour, minute] = time.split(":");
+	const date = new Date();
+	date.setHours(+hour);
+	date.setMinutes(+minute);
+	date.setSeconds(0);
+	date.setMilliseconds(0);
+	return date;
+};
+
+const searchUpdateProfile = (
+	first: ProfileData[],
+	second: ProfileData[]
+): ProfileData =>
+	first.find((profile) =>
+		second.some((oldProfile) => oldProfile.id === profile.id)
+	)!;
+
+export const getUpdatedProfile = (
+	newProfiles: ProfileData[],
+	oldProfiles: ProfileData[]
+): UpdateProfiles => {
+	if (newProfiles.length !== oldProfiles.length) {
+		const profile =
+			newProfiles.length > oldProfiles.length
+				? searchUpdateProfile(newProfiles, oldProfiles)
+				: searchUpdateProfile(oldProfiles, newProfiles);
+		return {
+			oldProfile: profile,
+			newProfile: profile,
+		};
+	}
+
+	const changedProfile = newProfiles.find((newProfile) =>
+		oldProfiles.some((oldProfile) => !equal(oldProfile, newProfile))
+	)!;
+
+	return {
+		newProfile: changedProfile,
+		oldProfile: oldProfiles.find(
+			(profile) => profile.id === changedProfile.id
+		)!,
+	};
+};

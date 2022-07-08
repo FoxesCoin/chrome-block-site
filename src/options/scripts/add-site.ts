@@ -1,4 +1,4 @@
-import { ProfileManager } from "../../profile";
+import { ProfileManager } from "./profile";
 
 const input = document.getElementById("add-site__input")! as HTMLInputElement;
 const button = document.getElementById("add-site__button")!;

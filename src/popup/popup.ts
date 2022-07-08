@@ -1,16 +1,15 @@
 import "./popup.scss";
 
-import { ProfileManager } from "../profile";
-import { ProfileData } from "../utils";
+import { getUpdatedProfile } from "../utils";
 
-const startRegExp = /https?:\/\/|www\./i;
+const START_REG_EXP = /https?:\/\/|www\./i;
 
 const button = document.getElementById("add-site")!;
 
 let url: string = "";
 
 const clearUrl = (link: string) => {
-	const newLink = link.replace(startRegExp, "");
+	const newLink = link.replace(START_REG_EXP, "");
 	const index = newLink.indexOf("/");
 	if (index !== -1) {
 		return newLink.substring(0, newLink.indexOf("/"));
@@ -18,7 +17,6 @@ const clearUrl = (link: string) => {
 	return newLink;
 };
 
-// @ts-ignore
 const isIncludeSite = (sites: string[] = []) =>
 	sites.some((site) => url.includes(site));
 
@@ -39,30 +37,29 @@ chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
 	}
 	url = clearUrl(tabUrl);
 
+	// TODO update to profile functional
 	button.addEventListener("click", async () => {
-		const sites = ProfileManager.activeProfile.sites;
-		if (isIncludeSite(sites)) {
-			return;
-		}
-		await ProfileManager.addSite(url);
-		disabledButton("Completed!");
+		// const sites = ProfileManager.activeProfile.sites;
+		// if (isIncludeSite(sites)) {
+		// 	return;
+		// }
+		// await ProfileManager.addSite(url);
+		// disabledButton("Completed!");
 	});
 });
 
 // TODO update to profile functional
 chrome.storage.onChanged.addListener((change) => {
-	const id = ProfileManager.idProfile;
-	const list = change.profiles.newValue.find(
-		(profile: ProfileData) => profile.id === id
-	);
+	if (!change?.profiles?.newValue) {
+		return;
+	}
 
-	if (isIncludeSite(list)) {
+	const { newValue, oldValue } = change.profiles;
+
+	const { sites } = getUpdatedProfile(newValue, oldValue).newProfile;
+
+	if (isIncludeSite(sites)) {
 		return disabledButton("Already added!");
 	}
 	activeButton("Add this site.");
 });
-
-const sites = ProfileManager.activeProfile.sites;
-if (sites.some((site: any) => url && url.includes(site))) {
-	disabledButton("Already added!");
-}

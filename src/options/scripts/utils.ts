@@ -8,16 +8,6 @@ export const createToday = () => {
 	return today.toUTCString();
 };
 
-export const createDateByTime = (time: string) => {
-	const [hour, minute] = time.split(":");
-	const date = new Date();
-	date.setHours(+hour);
-	date.setMinutes(+minute);
-	date.setSeconds(0);
-	date.setMilliseconds(0);
-	return date;
-};
-
 export const weeklyForm = document.getElementById(
 	"weekly-form"
 )! as HTMLFormElement;

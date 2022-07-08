@@ -1,49 +1,134 @@
-import { ProfileManager } from "../../profile";
-import { ProfileData } from "../../utils";
+import equal from "fast-deep-equal";
+import { loadSites } from "./sites-ui";
+import { loadTimelines } from "./timeline-ui";
 
-const profileList = document.getElementById("profiles")!;
+import {
+	addArrayItem,
+	getProfiles,
+	ProfileData,
+	ProfileFields,
+	removeArrayItem,
+	setProfiles,
+	Timeline,
+} from "../../utils";
 
-const createProfileUI = (profileData: ProfileData) => {
-	const profile = document.createElement("div");
+const PROFILE_TEMPLATE: ProfileData = {
+	id: 0,
+	sites: [],
+	timelines: [],
+};
 
-	if (profileData.id === ProfileManager.idProfile) {
-		profile.classList.add("profile_active");
+export class Profile {
+	#profiles: ProfileData[] = [];
+	#nextId: number = 0;
+	#activeProfile: ProfileData = PROFILE_TEMPLATE;
+
+	get profiles() {
+		return this.#profiles;
 	}
 
-	profile.classList.add("profile");
-	profile.innerHTML = profileData.id + "";
-	profile.addEventListener("click", () => {
-		ProfileManager.setActiveProfileById(profileData.id);
-	});
+	get activeProfile() {
+		return this.#activeProfile;
+	}
 
-	return profile;
-};
+	get idProfile() {
+		const id = this.#activeProfile?.id;
 
-const createAddProfileButton = () => {
-	const addButton = document.createElement("button");
-
-	addButton.innerHTML = "Add";
-	addButton.classList.add("profile__button");
-	addButton.addEventListener("click", () => {
-		ProfileManager.createProfile();
-	});
-
-	profileList.appendChild(addButton);
-};
-
-export function loadProfiles(profiles: ProfileData[]) {
-	profileList.innerHTML = "";
-	const profilesUi = profiles.map(createProfileUI);
-
-	profilesUi.forEach((profile) => {
-		profile.addEventListener("click", () => {
-			profilesUi.forEach((profileUi) =>
-				profileUi.classList.remove("profile_active")
+		if (!id) {
+			throw new Error(
+				"Active profile not loaded yet. Call function `loadData`."
 			);
-			profile.classList.add("profile_active");
-		});
-		profileList.appendChild(profile);
-	});
+		}
 
-	createAddProfileButton();
+		return id;
+	}
+
+	#setProfiles(newProfiles: ProfileData[]) {
+		this.#profiles = newProfiles;
+	}
+
+	setActiveProfileById(id: number) {
+		const profile = this.profiles.find((profile) => profile.id === id);
+		if (!profile) {
+			throw new Error("Not found profile by this index");
+		}
+
+		if (profile.id === this.#activeProfile.id) {
+			return;
+		}
+
+		this.#activeProfile = profile;
+		loadSites(profile.sites);
+		loadTimelines(profile.timelines);
+	}
+
+	async loadData() {
+		const data = await getProfiles();
+		this.#setProfiles(data);
+		this.#nextId = Math.max(...this.profiles.map((profile) => profile.id));
+		this.setActiveProfileById(data[0].id);
+	}
+
+	async #updateProfile(
+		getNewData: (currentProfile: ProfileData) => Partial<ProfileFields>
+	) {
+		const index = this.profiles.findIndex(
+			(profile) => profile.id === this.idProfile
+		);
+
+		if (index === -1) {
+			throw new Error("Profile not found! Please check id.");
+		}
+
+		const newProfile = {
+			...this.profiles[index],
+			...getNewData(this.profiles[index]),
+		};
+
+		this.profiles[index] = newProfile;
+		this.#activeProfile = newProfile;
+
+		await setProfiles(this.profiles);
+	}
+
+	async createProfile() {
+		const newId = this.#nextId + 1;
+		const newProfiles = addArrayItem(this.profiles, {
+			id: newId,
+			sites: [],
+			timelines: [],
+		});
+		this.#nextId = newId;
+		this.#setProfiles(newProfiles);
+		await setProfiles(this.profiles);
+	}
+
+	addTimeline(newTimeline: Timeline) {
+		const oldTimelines = this.#activeProfile.timelines;
+
+		if (oldTimelines.some((timeline) => equal(timeline, newTimeline))) {
+			return alert("This timeline already exist!");
+		}
+
+		return this.#updateProfile((before) => ({
+			timelines: addArrayItem(before.timelines, newTimeline),
+		}));
+	}
+
+	removeTimeline = (timeline: Timeline) =>
+		this.#updateProfile((before) => ({
+			timelines: removeArrayItem(before.timelines, timeline),
+		}));
+
+	addSite = (site: string) =>
+		this.#updateProfile((before) => ({
+			sites: addArrayItem(before.sites, site.toLocaleLowerCase()),
+		}));
+
+	removeSite = (site: string) =>
+		this.#updateProfile((before) => ({
+			sites: removeArrayItem(before.sites, site),
+		}));
 }
+
+export const ProfileManager = new Profile();

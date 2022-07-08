@@ -1,4 +1,4 @@
-import { ProfileManager } from "../../profile";
+import { ProfileManager } from "./profile";
 
 const siteList = document.getElementById("site-list")!;
 

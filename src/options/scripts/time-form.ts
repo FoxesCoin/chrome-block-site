@@ -1,6 +1,7 @@
-import { ProfileManager } from "../../profile";
-import { Daily, Nullable, Weekly } from "./../../utils";
-import { createDateByTime, createToday, dailyForm, weeklyForm } from "./utils";
+import { createDateByTime, Daily, Nullable, Weekly } from "../../utils";
+import { ProfileManager } from "./profile";
+import { createToday, dailyForm, weeklyForm } from "./utils";
+
 const formSupport = (form: HTMLFormElement) => {
 	const start = form.querySelector(".time__start") as HTMLInputElement;
 	const end = form.querySelector(".time__end") as HTMLInputElement;

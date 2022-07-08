@@ -2,29 +2,24 @@ const path = require("path");
 const CopyPlugin = require("copy-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
-const getFile = (...args) => path.resolve(__dirname, "..", "src", ...args);
+const getFile = (fileName) => path.resolve(__dirname, `../src/${fileName}.ts`);
 const getOptionFiles = (fileNames) =>
 	fileNames.map((fileName) =>
-		path.resolve(__dirname, `../src/options/scripts/${fileName}`)
+		path.resolve(__dirname, `../src/options/scripts/${fileName}.ts`)
 	);
 
 module.exports = {
 	mode: "production",
-	devtool: "source-map",
 	entry: {
-		background: getFile("background.ts"),
-		index: getFile("index.ts"),
-		"popup/popup": getFile("popup/popup.ts"),
+		background: getFile("background"),
+		index: getFile("base/index"),
+		"popup/popup": getFile("popup/popup"),
 		"options/options": getOptionFiles([
-			"index.ts",
-			"utils.ts",
-			"profile.ts",
-			"input.ts",
-			"tab.ts",
-			"time.ts",
-			"timeline.ts",
-			"sites",
-			"load-options.ts",
+			"index",
+			"add-site",
+			"tab",
+			"time-form",
+			"load-options",
 		]),
 	},
 	output: {

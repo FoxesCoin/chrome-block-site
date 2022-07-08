@@ -1,8 +1,8 @@
-import { ProfileManager } from "../../profile";
 import { ProfileData } from "../../utils";
-import { loadProfiles } from "./profile";
-import { loadSites } from "./sites";
-import { loadTimelines } from "./timeline";
+import { ProfileManager } from "./profile";
+import { loadProfiles } from "./profile-ui";
+import { loadSites } from "./sites-ui";
+import { loadTimelines } from "./timeline-ui";
 
 chrome.storage.onChanged.addListener((change) => {
 	const id = ProfileManager.idProfile;

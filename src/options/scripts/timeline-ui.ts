@@ -1,5 +1,5 @@
-import { ProfileManager } from "../../profile";
 import { Daily, isWeekly, Timeline, Timer, Weekly } from "../../utils";
+import { ProfileManager } from "./profile";
 
 const timelinesList = document.getElementById("timeline")!;
 
