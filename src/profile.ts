@@ -1,4 +1,6 @@
 import equal from "fast-deep-equal";
+import { loadSites } from "./options/scripts/sites";
+import { loadTimelines } from "./options/scripts/timeline";
 
 import {
 	addArrayItem,
@@ -45,20 +47,26 @@ class Profile {
 		this.#profiles = newProfiles;
 	}
 
-	setActiveProfileByIndex(index: number) {
-		const profile = this.profiles.at(index);
+	setActiveProfileById(id: number) {
+		const profile = this.profiles.find((profile) => profile.id === id);
 		if (!profile) {
 			throw new Error("Not found profile by this index");
 		}
 
+		if (profile.id === this.#activeProfile.id) {
+			return;
+		}
+
 		this.#activeProfile = profile;
+		loadSites(profile.sites);
+		loadTimelines(profile.timelines);
 	}
 
 	async loadData() {
 		const data = await getProfiles();
 		this.#setProfiles(data);
 		this.#nextId = Math.max(...this.profiles.map((profile) => profile.id));
-		this.setActiveProfileByIndex(0);
+		this.setActiveProfileById(data[0].id);
 	}
 
 	async #updateProfile(

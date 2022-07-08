@@ -24,5 +24,3 @@ export const weeklyForm = document.getElementById(
 export const dailyForm = document.getElementById(
 	"daily-form"
 )! as HTMLFormElement;
-export const siteList = document.getElementById("site-list")!;
-export const timeline = document.getElementById("timeline")!;

@@ -1,10 +1,9 @@
 body {
-	padding: 1rem !important;
 	margin: 0 auto !important;
 	display: grid;
 	font-size: 16px;
 	row-gap: 1rem;
-	grid-template-rows: max-content 160px max-content 1fr;
+	grid-template-rows: 3rem max-content 160px max-content 1fr;
 
 	background-color: #000;
 	color: #fff;

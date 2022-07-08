@@ -18,11 +18,13 @@ module.exports = {
 		"options/options": getOptionFiles([
 			"index.ts",
 			"utils.ts",
+			"profile.ts",
 			"input.ts",
 			"tab.ts",
 			"time.ts",
 			"timeline.ts",
-			"load-sites.ts",
+			"sites",
+			"load-options.ts",
 		]),
 	},
 	output: {

@@ -1,6 +1,7 @@
 import { ProfileManager } from "../../profile";
 import { Daily, isWeekly, Timeline, Timer, Weekly } from "../../utils";
-import { timeline as timelinesList } from "./utils";
+
+const timelinesList = document.getElementById("timeline")!;
 
 const WEEK_DAYS = [
 	{ value: 0, letter: "M" },
@@ -89,7 +90,7 @@ function createDaily(time: Daily) {
 	return item;
 }
 
-export function addHtmlTimelines(timeline: Timeline) {
+function addHtmlTimelines(timeline: Timeline) {
 	const item = isWeekly(timeline)
 		? createWeekly(timeline)
 		: createDaily(timeline);
@@ -107,4 +108,9 @@ export function addHtmlTimelines(timeline: Timeline) {
 	item.appendChild(cross);
 
 	timelinesList.appendChild(item);
+}
+
+export function loadTimelines(timelines: Timeline[]) {
+	timelinesList.innerHTML = "";
+	timelines.forEach(addHtmlTimelines);
 }

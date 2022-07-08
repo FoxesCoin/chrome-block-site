@@ -1,0 +1,48 @@
+$profile: #75b6cc;
+$profile-hover: #71cbe9;
+
+$profile-active: rgb(138, 184, 70);
+$profile-active-hover: rgb(129, 194, 31);
+
+$profile-button: rgb(89, 209, 209);
+$profile-button-hover: rgb(0, 192, 192);
+
+#profiles {
+	display: flex;
+}
+
+.profile {
+	flex: 0 0 auto;
+	min-width: 3rem;
+	justify-content: center;
+	align-items: center;
+	background-color: $profile;
+	display: flex;
+	cursor: pointer;
+
+	&:hover {
+		box-shadow: 0px 0px 15px 0px $profile-hover;
+	}
+
+	&_active {
+		flex: 1 1 auto;
+		background-color: $profile-active;
+
+		&:hover {
+			background-color: $profile-active-hover;
+			box-shadow: 0px 0px 15px 0px $profile-active-hover;
+		}
+	}
+
+	&__button {
+		font-weight: bold;
+		border: unset;
+		background-color: $profile-button;
+		padding: 0.5rem 1.5rem;
+
+		&:hover {
+			background-color: $profile-button-hover;
+			box-shadow: 0px 0px 15px 0px $profile-button-hover;
+		}
+	}
+}
