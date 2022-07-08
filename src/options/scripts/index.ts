@@ -1,6 +1,6 @@
-import "../style/add-site.css";
-import "../style/options.css";
-import "../style/reset.css";
-import "../style/site-list.css";
-import "../style/time.css";
-import "../style/timeline.css";
+import "../style/add-site.scss";
+import "../style/options.scss";
+import "../style/reset.scss";
+import "../style/site-list.scss";
+import "../style/time.scss";
+import "../style/timeline.scss";

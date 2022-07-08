@@ -1,0 +1,84 @@
+#timeline {
+	overflow: auto;
+	max-height: 250px;
+	border-radius: 0.5rem;
+
+	display: grid;
+	row-gap: 1rem;
+	grid-auto-rows: max-content;
+
+	&:empty {
+		height: 3rem;
+	}
+}
+
+.timeline {
+	position: relative;
+}
+
+.default-message {
+	display: none;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+
+	font-weight: bold;
+	font-size: 2rem;
+	color: #f00;
+}
+
+#timeline:empty ~ .default-message {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.timeline {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+
+	&__daily {
+		border-radius: 0.25rem;
+		padding: 0.25rem 0.5rem;
+		background-color: #128585;
+		font-weight: bold;
+	}
+
+	&__timer {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+	}
+
+	&__time {
+		border-radius: 0.25rem;
+		padding: 0.25rem 0.5rem;
+		background-color: rgb(223, 184, 134);
+		font-size: 1.5rem;
+		font-weight: bold;
+	}
+
+	&__day {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		border: 2px solid #fff;
+		width: 2rem;
+		height: 2rem;
+		border-radius: 50%;
+		font-weight: bold;
+
+		&_active {
+			background-color: #128585;
+		}
+	}
+
+	&__weekdays {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+	}
+}

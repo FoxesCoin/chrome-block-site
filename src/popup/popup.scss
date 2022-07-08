@@ -16,15 +16,15 @@ body {
 	cursor: pointer;
 	font-weight: bold;
 	transition: all 0.2s;
-}
 
-#add-site:hover {
-	background-color: rgb(219, 99, 99);
-}
+	&:hover {
+		background-color: rgb(219, 99, 99);
+	}
 
-#add-site:disabled {
-	cursor: not-allowed;
-	background-color: lightgrey;
-	border-color: rgb(107, 107, 107);
-	color: rgb(107, 107, 107);
+	&:disabled {
+		cursor: not-allowed;
+		background-color: lightgrey;
+		border-color: rgb(107, 107, 107);
+		color: rgb(107, 107, 107);
+	}
 }

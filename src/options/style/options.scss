@@ -1,0 +1,48 @@
+body {
+	padding: 1rem !important;
+	margin: 0 auto !important;
+	display: grid;
+	font-size: 16px;
+	row-gap: 1rem;
+	grid-template-rows: max-content 160px max-content 1fr;
+
+	background-color: #000;
+	color: #fff;
+	font-family: "Roboto", sans-serif;
+
+	max-width: 1000px;
+}
+
+.title {
+	font-weight: bold;
+	font-size: 1.5rem;
+}
+
+.tab {
+	display: flex;
+	height: 40px;
+
+	&__item {
+		flex: 1 1 auto;
+		text-align: center;
+		font-size: 20px;
+		font-weight: bold;
+		padding: 0.5rem 1rem;
+		cursor: pointer;
+		border-top-right-radius: 0.5rem;
+		border-top-left-radius: 0.5rem;
+		border-bottom: 1px solid #fff;
+		transition: all 0.2s;
+
+		&:hover {
+			background-color: #bbb;
+		}
+
+		&_active {
+			border-bottom: 1px solid #0000;
+			border-top: 1px solid #fff;
+			border-left: 1px solid #fff;
+			border-right: 1px solid #fff;
+		}
+	}
+}

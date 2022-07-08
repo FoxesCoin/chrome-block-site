@@ -1,4 +1,4 @@
-import "./popup.css";
+import "./popup.scss";
 
 import { ProfileManager } from "../profile";
 import { ProfileData } from "../utils";
