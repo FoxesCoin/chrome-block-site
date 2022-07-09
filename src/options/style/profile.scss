@@ -59,6 +59,7 @@ $profile-button-hover: rgb(0, 192, 192);
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;
+		min-width: 1rem;
 
 		&_editable {
 			border-bottom: 2px solid black;

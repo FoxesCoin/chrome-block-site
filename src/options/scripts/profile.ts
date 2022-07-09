@@ -121,8 +121,13 @@ export class Profile {
 		await this.#setProfiles(profiles);
 	}
 
-	renameProfile = (id: number, newName: string) =>
-		this.#updateProfile((before) => ({ name: newName }), id);
+	renameProfile = (id: number, newName: string) => {
+		this.#updateProfile(
+			(before) =>
+				newName.trim() === before.name ? {} : { name: newName.trim() },
+			id
+		);
+	};
 
 	addTimeline(newTimeline: Timeline) {
 		const oldTimelines = this.#activeProfile.timelines;

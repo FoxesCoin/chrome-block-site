@@ -50,18 +50,21 @@ const createProfileUI = (profileData: ProfileData) => {
 	}
 
 	edit.addEventListener("click", (event) => {
+		event.stopPropagation();
+		event.preventDefault();
 		if (input.getAttribute("contentEditable") !== "") {
 			input.setAttribute("contentEditable", "");
 			input.classList.add("profile__input_editable");
 			input.focus();
-		} else {
-			input.classList.remove("profile__input_editable");
-			input.removeAttribute("contentEditable");
-			ProfileManager.renameProfile(id, input.innerHTML);
+			return;
 		}
-		event.stopPropagation();
-		event.preventDefault();
-		return false;
+		if (!input.innerHTML.trim()) {
+			return alert("New name should have minimum 1 character.");
+		}
+
+		input.classList.remove("profile__input_editable");
+		input.removeAttribute("contentEditable");
+		ProfileManager.renameProfile(id, input.innerHTML);
 	});
 
 	profile.appendChild(edit);
