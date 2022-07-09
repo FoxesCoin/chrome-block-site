@@ -26,6 +26,7 @@ export interface Weekly extends Timer {
 export type Timeline = Daily | Weekly;
 
 export interface ProfileFields {
+	name: string;
 	sites: string[];
 	timelines: Timeline[];
 }

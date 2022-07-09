@@ -1,4 +1,5 @@
 import equal from "fast-deep-equal";
+import cloneDeep from "lodash.clonedeep";
 import { loadSites } from "./sites-ui";
 import { loadTimelines } from "./timeline-ui";
 
@@ -12,8 +13,8 @@ import {
 	Timeline,
 } from "../../utils";
 
-const PROFILE_TEMPLATE: ProfileData = {
-	id: 0,
+const PROFILE_TEMPLATE: ProfileFields = {
+	name: "Default",
 	sites: [],
 	timelines: [],
 };
@@ -21,7 +22,40 @@ const PROFILE_TEMPLATE: ProfileData = {
 export class Profile {
 	#profiles: ProfileData[] = [];
 	#nextId: number = 0;
-	#activeProfile: ProfileData = PROFILE_TEMPLATE;
+	#activeProfile: ProfileData = { ...PROFILE_TEMPLATE, id: 0 };
+
+	async #setProfiles(newProfiles: ProfileData[]) {
+		try {
+			this.#profiles = newProfiles;
+			await setProfiles(newProfiles);
+		} catch {
+			console.error("Profile not updated. Check google services.");
+		}
+	}
+
+	async #updateProfile(
+		getNewData: (currentProfile: ProfileData) => Partial<ProfileFields>,
+		id = this.idProfile
+	) {
+		const index = this.profiles.findIndex((profile) => profile.id === id);
+
+		if (index === -1) {
+			throw new Error("Profile not found! Please check id.");
+		}
+
+		const newValue = getNewData(this.profiles[index]);
+
+		if (Object.keys(newValue).length === 0) {
+			return;
+		}
+
+		const newProfile = { ...this.profiles[index], ...newValue };
+
+		this.profiles[index] = newProfile;
+		this.#activeProfile = newProfile;
+
+		await setProfiles(this.profiles);
+	}
 
 	get profiles() {
 		return this.#profiles;
@@ -43,8 +77,11 @@ export class Profile {
 		return id;
 	}
 
-	#setProfiles(newProfiles: ProfileData[]) {
-		this.#profiles = newProfiles;
+	async loadData() {
+		const data = await getProfiles();
+		this.#setProfiles(data);
+		this.#nextId = Math.max(...this.profiles.map((profile) => profile.id));
+		this.setActiveProfileById(data[0].id);
 	}
 
 	setActiveProfileById(id: number) {
@@ -62,46 +99,30 @@ export class Profile {
 		loadTimelines(profile.timelines);
 	}
 
-	async loadData() {
-		const data = await getProfiles();
-		this.#setProfiles(data);
-		this.#nextId = Math.max(...this.profiles.map((profile) => profile.id));
-		this.setActiveProfileById(data[0].id);
-	}
-
-	async #updateProfile(
-		getNewData: (currentProfile: ProfileData) => Partial<ProfileFields>
-	) {
-		const index = this.profiles.findIndex(
-			(profile) => profile.id === this.idProfile
-		);
-
-		if (index === -1) {
-			throw new Error("Profile not found! Please check id.");
-		}
-
-		const newProfile = {
-			...this.profiles[index],
-			...getNewData(this.profiles[index]),
-		};
-
-		this.profiles[index] = newProfile;
-		this.#activeProfile = newProfile;
-
-		await setProfiles(this.profiles);
-	}
-
 	async createProfile() {
 		const newId = this.#nextId + 1;
 		const newProfiles = addArrayItem(this.profiles, {
+			...PROFILE_TEMPLATE,
 			id: newId,
-			sites: [],
-			timelines: [],
+			name: `Profile #${newId}`,
 		});
 		this.#nextId = newId;
-		this.#setProfiles(newProfiles);
-		await setProfiles(this.profiles);
+		await this.#setProfiles(newProfiles);
 	}
+
+	async removeProfile(id: number) {
+		if (this.profiles.length === 1) {
+			return alert("You can't remove all profiles. You should have minimum 1.");
+		}
+
+		const profiles = cloneDeep(this.profiles);
+		const index = profiles.findIndex((profile) => profile.id === id);
+		profiles.splice(index, 1);
+		await this.#setProfiles(profiles);
+	}
+
+	renameProfile = (id: number, newName: string) =>
+		this.#updateProfile((before) => ({ name: newName }), id);
 
 	addTimeline(newTimeline: Timeline) {
 		const oldTimelines = this.#activeProfile.timelines;

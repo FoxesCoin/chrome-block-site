@@ -7,31 +7,84 @@ $profile-active-hover: rgb(129, 194, 31);
 $profile-button: rgb(89, 209, 209);
 $profile-button-hover: rgb(0, 192, 192);
 
-#profiles {
+.profile-wrapper {
 	display: flex;
 }
 
+#profiles {
+	flex: 1 1 auto;
+	display: flex;
+	overflow-x: auto;
+
+	&::-webkit-scrollbar {
+		display: none;
+	}
+}
+
 .profile {
-	flex: 0 0 auto;
-	min-width: 3rem;
+	min-width: 7rem;
+	max-width: 12rem;
+	background-color: $profile;
+
+	cursor: pointer;
+	overflow: hidden;
+
+	display: flex;
 	justify-content: center;
 	align-items: center;
-	background-color: $profile;
-	display: flex;
-	cursor: pointer;
 
 	&:hover {
 		box-shadow: 0px 0px 15px 0px $profile-hover;
 	}
 
+	& > * + * {
+		margin-left: 0.5rem;
+	}
+
 	&_active {
-		flex: 1 1 auto;
+		min-width: 24rem;
+		flex: 1 0 auto;
+		max-width: unset;
 		background-color: $profile-active;
 
 		&:hover {
 			background-color: $profile-active-hover;
 			box-shadow: 0px 0px 15px 0px $profile-active-hover;
 		}
+	}
+
+	&__input {
+		text-align: center;
+		font-weight: bold;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+
+		&_editable {
+			border-bottom: 2px solid black;
+		}
+	}
+
+	&:first-of-type:last-of-type &__icon_remove {
+		display: none;
+	}
+
+	&__icon {
+		width: 1.5rem;
+		height: 1.5rem;
+		position: relative;
+		border-radius: 50%;
+		padding: 0.25rem;
+		cursor: pointer;
+		flex: 1 0 auto;
+
+		&:hover {
+			background-color: lightblue;
+		}
+	}
+
+	&_active &__icon {
+		flex: unset;
 	}
 
 	&__button {

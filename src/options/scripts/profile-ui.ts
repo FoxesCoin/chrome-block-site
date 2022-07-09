@@ -3,32 +3,72 @@ import { ProfileManager } from "./profile";
 
 const profileList = document.getElementById("profiles")!;
 
+const createNameField = (profileData: ProfileData) => {
+	const input = document.createElement("span");
+
+	input.classList.add("profile__input");
+	input.innerHTML = profileData.name;
+
+	input.addEventListener("click", () => {
+		ProfileManager.setActiveProfileById(profileData.id);
+	});
+
+	return input;
+};
+
+const createRemoveIcon = (profileId: number) => {
+	const img = document.createElement("img");
+	img.src = "../assets/cross.svg";
+	img.alt = "Remove profile";
+	img.classList.add("profile__icon", "profile__icon_remove");
+	img.addEventListener("click", () => {
+		ProfileManager.removeProfile(profileId);
+	});
+
+	return img;
+};
+
+const createEditIcon = () => {
+	const img = document.createElement("img");
+	img.src = "../assets/edit.svg";
+	img.alt = "New name";
+	img.classList.add("profile__icon", "profile__icon_edit");
+
+	return img;
+};
+
 const createProfileUI = (profileData: ProfileData) => {
 	const profile = document.createElement("div");
+	const id = profileData.id;
+	const input = createNameField(profileData);
+	const edit = createEditIcon();
+	const remove = createRemoveIcon(id);
 
+	profile.classList.add("profile");
 	if (profileData.id === ProfileManager.idProfile) {
 		profile.classList.add("profile_active");
 	}
 
-	profile.classList.add("profile");
-	profile.innerHTML = profileData.id + "";
-	profile.addEventListener("click", () => {
-		ProfileManager.setActiveProfileById(profileData.id);
+	edit.addEventListener("click", (event) => {
+		if (input.getAttribute("contentEditable") !== "") {
+			input.setAttribute("contentEditable", "");
+			input.classList.add("profile__input_editable");
+			input.focus();
+		} else {
+			input.classList.remove("profile__input_editable");
+			input.removeAttribute("contentEditable");
+			ProfileManager.renameProfile(id, input.innerHTML);
+		}
+		event.stopPropagation();
+		event.preventDefault();
+		return false;
 	});
+
+	profile.appendChild(edit);
+	profile.appendChild(input);
+	profile.appendChild(remove);
 
 	return profile;
-};
-
-const createAddProfileButton = () => {
-	const addButton = document.createElement("button");
-
-	addButton.innerHTML = "Add";
-	addButton.classList.add("profile__button");
-	addButton.addEventListener("click", () => {
-		ProfileManager.createProfile();
-	});
-
-	profileList.appendChild(addButton);
 };
 
 export function loadProfiles(profiles: ProfileData[]) {
@@ -44,6 +84,4 @@ export function loadProfiles(profiles: ProfileData[]) {
 		});
 		profileList.appendChild(profile);
 	});
-
-	createAddProfileButton();
 }

@@ -4,6 +4,12 @@ import { loadProfiles } from "./profile-ui";
 import { loadSites } from "./sites-ui";
 import { loadTimelines } from "./timeline-ui";
 
+const addButton = document.querySelector(".profile__button")!;
+
+addButton.addEventListener("click", () => {
+	ProfileManager.createProfile();
+});
+
 chrome.storage.onChanged.addListener((change) => {
 	const id = ProfileManager.idProfile;
 	const { timelines, sites } = change.profiles.newValue.find(

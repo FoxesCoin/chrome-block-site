@@ -4,6 +4,7 @@ const PROFILE_TEMPLATE: ProfileData = {
 	id: 1,
 	sites: [],
 	timelines: [],
+	name: "Default",
 };
 
 chrome.runtime.onInstalled.addListener(() => {

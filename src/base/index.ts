@@ -58,6 +58,11 @@ chrome.storage.onChanged.addListener((changes) => {
 		return;
 	}
 
+	//? Did added new profile
+	if (newValue.length > changes.profiles.oldValue.length) {
+		return;
+	}
+
 	const { newProfile, oldProfile } = getUpdatedProfile(
 		newValue,
 		changes.profiles.oldValue
