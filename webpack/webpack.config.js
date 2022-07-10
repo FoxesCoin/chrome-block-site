@@ -13,7 +13,7 @@ module.exports = {
 	entry: {
 		background: getFile("background"),
 		index: getFile("base/index"),
-		"popup/popup": getFile("popup/popup"),
+		"popup/popup": getFile("popup/scripts/popup"),
 		"options/options": getOptionFiles([
 			"index",
 			"add-site",

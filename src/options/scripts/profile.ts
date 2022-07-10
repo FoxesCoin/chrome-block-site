@@ -118,6 +118,7 @@ export class Profile {
 		const profiles = cloneDeep(this.profiles);
 		const index = profiles.findIndex((profile) => profile.id === id);
 		profiles.splice(index, 1);
+		this.#activeProfile = profiles[index === 0 ? 0 : index - 1];
 		await this.#setProfiles(profiles);
 	}
 

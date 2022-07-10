@@ -5,8 +5,8 @@ export type Nullable<T> = {
 };
 
 interface UpdateProfiles {
-	oldProfile: ProfileData;
-	newProfile: ProfileData;
+	oldProfile: ProfileData | null;
+	newProfile: ProfileData | null;
 }
 
 export interface Timer {
@@ -98,14 +98,17 @@ export const getUpdatedProfile = (
 	newProfiles: ProfileData[],
 	oldProfiles: ProfileData[]
 ): UpdateProfiles => {
-	if (newProfiles.length !== oldProfiles.length) {
-		const profile =
-			newProfiles.length > oldProfiles.length
-				? searchUpdateProfile(newProfiles, oldProfiles)
-				: searchUpdateProfile(oldProfiles, newProfiles);
+	if (newProfiles.length > oldProfiles.length) {
 		return {
-			oldProfile: profile,
-			newProfile: profile,
+			newProfile: searchUpdateProfile(newProfiles, oldProfiles),
+			oldProfile: null,
+		};
+	}
+
+	if (newProfiles.length < oldProfiles.length) {
+		return {
+			oldProfile: searchUpdateProfile(oldProfiles, newProfiles),
+			newProfile: null,
 		};
 	}
 

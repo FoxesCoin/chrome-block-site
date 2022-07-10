@@ -1,10 +1,96 @@
-body {
-	width: 300px;
-	border-radius: 0.5rem;
-	padding: 0.5rem;
-	margin: 0;
+$white: #fff;
 
-	position: relative;
+$content-width: 320px;
+$profile-height: 32px;
+
+$profile-width: $content-width - 20px;
+$profile-item-width: $profile-width - ($profile-height * 2);
+
+$border: 1px solid $white;
+$arrow-hover: rgb(90, 119, 129);
+
+body {
+	width: $content-width;
+	padding: 0.25rem;
+	margin: 0;
+	font-size: 16px;
+	margin-top: 0.5rem;
+
+	font-family: "Roboto", sans-serif;
+
+	background-color: rgb(26, 26, 26);
+}
+
+* {
+	box-sizing: border-box;
+}
+
+.profile-wrapper {
+	display: flex;
+	height: $profile-height;
+	width: $profile-width;
+	margin: 0.5rem auto;
+
+	&__button {
+		width: $profile-height;
+		height: $profile-height;
+		font-weight: bold;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		cursor: pointer;
+
+		border: unset;
+		background-color: unset;
+
+		background-color: transparent;
+		transition: all 0.2s;
+
+		border-top: $border;
+		border-bottom: $border;
+		color: $white;
+
+		&_next {
+			border-radius: 0 0.5rem 0.5rem 0;
+			border-right: $border;
+		}
+
+		&_before {
+			border-radius: 0.5rem 0 0 0.5rem;
+			border-left: $border;
+		}
+
+		&:hover {
+			background-color: $arrow-hover;
+			box-shadow: 0px 0px 15px 0px $arrow-hover;
+		}
+	}
+}
+
+#profile {
+	display: flex;
+	flex: 1 1 auto;
+	overflow-x: hidden;
+	width: $profile-item-width;
+	height: $profile-height;
+
+	border: $border;
+
+	&::-webkit-scrollbar {
+		display: none;
+	}
+}
+
+.profile {
+	min-width: $profile-item-width;
+	text-align: center;
+	font-weight: bold;
+	background-color: transparent;
+	color: $white;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 #add-site {
