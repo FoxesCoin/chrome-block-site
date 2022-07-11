@@ -94,7 +94,7 @@ export class Profile {
 
 	async loadData() {
 		const data = await getProfiles();
-		this.#nextId = Math.max(...this.profiles.map((profile) => profile.id));
+		this.#nextId = Math.max(...data.map((profile) => profile.id));
 		this.updateProfiles(data, data[0].id);
 	}
 
