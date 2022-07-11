@@ -11,7 +11,7 @@ export const isExistSite = (sites: string[]) =>
 class BlockSite {
 	#isHaveActiveTimeline = false;
 	#isIncludeSite = false;
-	#connectedTimelines: Timeline[] = [];
+	#connectedTimelines: Timeline[][] = [];
 	#intervalId: any;
 
 	#setIsHaveActiveTimeline(newValue: boolean) {
@@ -24,13 +24,14 @@ class BlockSite {
 		}
 		if (this.#intervalId) {
 			clearInterval(this.#intervalId);
-			this.#intervalId = null;
+			this.#intervalId = undefined;
 		}
 	}
 
 	#isHaveTodayBlock() {
-		return this.#connectedTimelines.some((timelines) =>
-			isIncludesTodayInTimeline(timelines)
+		return this.#connectedTimelines.some(
+			(timelines) =>
+				!timelines.length || timelines.some(isIncludesTodayInTimeline)
 		);
 	}
 
@@ -52,11 +53,10 @@ class BlockSite {
 			.filter((profile) => isExistSite(profile.sites))
 			.map(({ timelines }) => timelines);
 
+		this.#connectedTimelines = timelines;
 		this.#isIncludeSite = !!timelines.length;
 		this.#setIsHaveActiveTimeline(
-			(timelines.length > 0 &&
-				timelines.some((timelines) => !timelines.length)) ||
-				this.#isHaveTodayBlock()
+			timelines.length > 0 && this.#isHaveTodayBlock()
 		);
 
 		return this.#isHaveActiveTimeline;
