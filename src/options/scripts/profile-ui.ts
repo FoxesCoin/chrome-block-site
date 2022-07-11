@@ -9,10 +9,6 @@ const createNameField = (profileData: ProfileData) => {
 	input.classList.add("profile__input");
 	input.innerHTML = profileData.name;
 
-	input.addEventListener("click", () => {
-		ProfileManager.setActiveProfileById(profileData.id);
-	});
-
 	return input;
 };
 
@@ -67,9 +63,17 @@ const createProfileUI = (profileData: ProfileData) => {
 		ProfileManager.renameProfile(id, input.innerHTML);
 	});
 
-	profile.appendChild(edit);
+	const actionBar = document.createElement("div");
+	actionBar.classList.add("profile__action-bar");
+	actionBar.appendChild(edit);
+	actionBar.appendChild(remove);
+
 	profile.appendChild(input);
-	profile.appendChild(remove);
+	profile.appendChild(actionBar);
+
+	profile.addEventListener("click", () => {
+		ProfileManager.setActiveProfileById(profileData.id);
+	});
 
 	return profile;
 };

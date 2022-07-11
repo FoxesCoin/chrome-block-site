@@ -12,6 +12,7 @@ import {
 	setProfiles,
 	Timeline,
 } from "../../utils";
+import { loadProfiles } from "./profile-ui";
 
 const PROFILE_TEMPLATE: ProfileFields = {
 	name: "Default",
@@ -24,7 +25,13 @@ export class Profile {
 	#nextId: number = 0;
 	#activeProfile: ProfileData = { ...PROFILE_TEMPLATE, id: 0 };
 
-	async #setProfiles(newProfiles: ProfileData[]) {
+	#setActiveProfile = (profile: ProfileData) => {
+		this.#activeProfile = profile;
+		loadSites(profile.sites);
+		loadTimelines(profile.timelines);
+	};
+
+	async #requestSetProfiles(newProfiles: ProfileData[]) {
 		try {
 			this.#profiles = newProfiles;
 			await setProfiles(newProfiles);
@@ -42,7 +49,6 @@ export class Profile {
 		if (index === -1) {
 			throw new Error("Profile not found! Please check id.");
 		}
-
 		const newValue = getNewData(this.profiles[index]);
 
 		if (Object.keys(newValue).length === 0) {
@@ -52,7 +58,7 @@ export class Profile {
 		const newProfile = { ...this.profiles[index], ...newValue };
 
 		this.profiles[index] = newProfile;
-		this.#activeProfile = newProfile;
+		this.#setActiveProfile(newProfile);
 
 		await setProfiles(this.profiles);
 	}
@@ -77,11 +83,19 @@ export class Profile {
 		return id;
 	}
 
+	updateProfiles(
+		profiles: ProfileData[],
+		idActiveProfile: number = this.idProfile
+	) {
+		this.#profiles = profiles;
+		this.setActiveProfileById(idActiveProfile);
+		loadProfiles(profiles);
+	}
+
 	async loadData() {
 		const data = await getProfiles();
-		this.#setProfiles(data);
 		this.#nextId = Math.max(...this.profiles.map((profile) => profile.id));
-		this.setActiveProfileById(data[0].id);
+		this.updateProfiles(data, data[0].id);
 	}
 
 	setActiveProfileById(id: number) {
@@ -90,13 +104,7 @@ export class Profile {
 			throw new Error("Not found profile by this index");
 		}
 
-		if (profile.id === this.#activeProfile.id) {
-			return;
-		}
-
-		this.#activeProfile = profile;
-		loadSites(profile.sites);
-		loadTimelines(profile.timelines);
+		this.#setActiveProfile(profile);
 	}
 
 	async createProfile() {
@@ -107,7 +115,7 @@ export class Profile {
 			name: `Profile #${newId}`,
 		});
 		this.#nextId = newId;
-		await this.#setProfiles(newProfiles);
+		await this.#requestSetProfiles(newProfiles);
 	}
 
 	async removeProfile(id: number) {
@@ -119,7 +127,7 @@ export class Profile {
 		const index = profiles.findIndex((profile) => profile.id === id);
 		profiles.splice(index, 1);
 		this.#activeProfile = profiles[index === 0 ? 0 : index - 1];
-		await this.#setProfiles(profiles);
+		await this.#requestSetProfiles(profiles);
 	}
 
 	renameProfile = (id: number, newName: string) => {

@@ -4,47 +4,27 @@ $profile-hover: #71cbe9;
 $profile-active: rgb(138, 184, 70);
 $profile-active-hover: rgb(129, 194, 31);
 
-$profile-button: rgb(89, 209, 209);
-$profile-button-hover: rgb(0, 192, 192);
-
-.profile-wrapper {
-	display: flex;
-}
-
-#profiles {
-	flex: 1 1 auto;
-	display: flex;
-	overflow-x: auto;
-
-	&::-webkit-scrollbar {
-		display: none;
-	}
-}
-
 .profile {
-	min-width: 7rem;
-	max-width: 12rem;
+	width: 100%;
+	height: 3rem;
 	background-color: $profile;
 
-	cursor: pointer;
-	overflow: hidden;
-
 	display: flex;
-	justify-content: center;
+	justify-content: space-between;
 	align-items: center;
+	padding: 0.5rem 1rem;
+
+	cursor: pointer;
 
 	&:hover {
 		box-shadow: 0px 0px 15px 0px $profile-hover;
 	}
 
-	& > * + * {
+	&__action-bar > * + * {
 		margin-left: 0.5rem;
 	}
 
 	&_active {
-		min-width: 24rem;
-		flex: 1 0 auto;
-		max-width: unset;
 		background-color: $profile-active;
 
 		&:hover {
@@ -54,12 +34,12 @@ $profile-button-hover: rgb(0, 192, 192);
 	}
 
 	&__input {
-		text-align: center;
 		font-weight: bold;
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;
 		min-width: 1rem;
+		flex: 1 0;
 
 		&_editable {
 			border-bottom: 2px solid black;
@@ -86,17 +66,5 @@ $profile-button-hover: rgb(0, 192, 192);
 
 	&_active &__icon {
 		flex: unset;
-	}
-
-	&__button {
-		font-weight: bold;
-		border: unset;
-		background-color: $profile-button;
-		padding: 0.5rem 1.5rem;
-
-		&:hover {
-			background-color: $profile-button-hover;
-			box-shadow: 0px 0px 15px 0px $profile-button-hover;
-		}
 	}
 }

@@ -1,11 +1,13 @@
+@import "variable";
+
 #add-site__input {
-	border: 1px solid #fff;
+	border: $white-border;
 	height: 2rem;
 	padding: 0.25rem 1rem;
 	border-radius: 0.75rem;
 	width: 100%;
 	background-color: transparent;
-	color: #fff;
+	color: $white;
 
 	&::placeholder {
 		color: rgb(211, 211, 211);
@@ -20,13 +22,13 @@
 	padding: 0.25rem 0.5rem;
 	border-radius: 0.25rem;
 	top: calc(50% - 0.75rem);
-	background-color: #0000;
+	background-color: transparent;
 	margin: 0;
 
 	color: rgb(255, 0, 0);
 
 	&:disabled {
-		background-color: #fff;
+		background-color: $white;
 		color: #999;
 	}
 }

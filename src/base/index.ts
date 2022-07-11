@@ -19,15 +19,12 @@ chrome.storage.onChanged.addListener((changes) => {
 		return;
 	}
 
-	console.log({ newValue, oldValue });
-
 	//? Did profile ADDED?
 	if (newValue.length > oldValue.length) {
 		return;
 	}
 
 	const { newProfile, oldProfile } = getUpdatedProfile(newValue, oldValue);
-	console.log({ newProfile, oldProfile });
 
 	//? Did profile REMOVE?
 	if (!newProfile) {

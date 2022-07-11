@@ -1,3 +1,5 @@
+@import "variable";
+
 #site-list {
 	padding: 0.5rem;
 	display: grid;
@@ -8,7 +10,7 @@
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	border: 1px solid #fff;
+	border: $white-border;
 	border-radius: 0.5rem;
 	padding: 0.25rem;
 
