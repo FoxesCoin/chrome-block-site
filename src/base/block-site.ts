@@ -1,8 +1,9 @@
 import { ProfileData, Timeline } from "../utils";
-import { clearDocument } from "./clear-document";
 import { isIncludesTodayInTimeline } from "./timeline";
 
 const HOST = window.location.hostname;
+const URL =
+	"chrome-extension://gegfekkmkeefhonpmckhmdaalebkhkjo/block-site-redirect.html";
 const MILLISECOND_IN_MINUTE = 60 * 1000;
 
 export const isExistSite = (sites: string[]) =>
@@ -10,9 +11,24 @@ export const isExistSite = (sites: string[]) =>
 
 class BlockSite {
 	#isHaveActiveTimeline = false;
-	#isIncludeSite = false;
 	#connectedTimelines: Timeline[][] = [];
 	#intervalId: any;
+
+	#blockSiteByTime() {
+		if (this.#isHaveActiveTimeline) {
+			window.location.href = URL;
+		}
+	}
+
+	#activateSiteTimer = () => {
+		this.#blockSiteByTime();
+		if (this.#intervalId) {
+			clearInterval(this.#intervalId);
+		}
+		this.#intervalId = setInterval(() => {
+			this.#blockSiteByTime();
+		}, MILLISECOND_IN_MINUTE);
+	};
 
 	#setIsHaveActiveTimeline(newValue: boolean) {
 		if (newValue === this.#isHaveActiveTimeline) {
@@ -20,7 +36,7 @@ class BlockSite {
 		}
 		this.#isHaveActiveTimeline = newValue;
 		if (newValue) {
-			return this.activateSiteTimer();
+			return this.#activateSiteTimer();
 		}
 		if (this.#intervalId) {
 			clearInterval(this.#intervalId);
@@ -35,42 +51,16 @@ class BlockSite {
 		);
 	}
 
-	#blockSiteByTime() {
-		if (this.isHaveActiveTimeline) {
-			clearDocument();
-		}
-	}
-
-	get isIncludeSite() {
-		return this.#isIncludeSite;
-	}
-	get isHaveActiveTimeline() {
-		return this.#isHaveActiveTimeline;
-	}
-
-	checkProfiles(profiles: ProfileData[]): boolean {
+	checkProfiles(profiles: ProfileData[]) {
 		const timelines = profiles
 			.filter((profile) => isExistSite(profile.sites))
 			.map(({ timelines }) => timelines);
 
 		this.#connectedTimelines = timelines;
-		this.#isIncludeSite = !!timelines.length;
 		this.#setIsHaveActiveTimeline(
 			timelines.length > 0 && this.#isHaveTodayBlock()
 		);
-
-		return this.#isHaveActiveTimeline;
 	}
-
-	activateSiteTimer = () => {
-		this.#blockSiteByTime();
-		if (this.#intervalId) {
-			clearInterval(this.#intervalId);
-		}
-		this.#intervalId = setInterval(() => {
-			this.#blockSiteByTime();
-		}, MILLISECOND_IN_MINUTE);
-	};
 }
 
 export const BlockSiteManager = new BlockSite();

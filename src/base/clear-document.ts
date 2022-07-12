@@ -1,4 +1,6 @@
-const HTML = `<div class="message">Return to work</div>`;
+const HTML = `<div class="message">
+Return to work
+</div>`;
 const HEADER = `<style>
 .message {
 	display: flex;
@@ -19,6 +21,8 @@ const HEADER = `<style>
 </style>`;
 
 export function clearDocument() {
-	document.body.innerHTML = HTML;
-	document.head.innerHTML = HEADER;
+	location.href =
+		"chrome-extension://gegfekkmkeefhonpmckhmdaalebkhkjo/block-site-redirect.html";
+	// document.body.innerHTML = HTML;
+	// document.head.innerHTML = HEADER;
 }

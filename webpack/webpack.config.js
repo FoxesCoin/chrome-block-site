@@ -59,6 +59,10 @@ module.exports = {
 				{ from: "src/assets", to: "assets" },
 				{ from: "src/options/options.html", to: "options/options.html" },
 				{ from: "src/popup/popup.html", to: "popup/popup.html" },
+				{
+					from: "src/block-site-redirect.html",
+					to: "block-site-redirect.html",
+				},
 			],
 		}),
 	],
