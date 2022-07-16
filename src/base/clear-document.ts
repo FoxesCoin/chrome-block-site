@@ -23,6 +23,4 @@ const HEADER = `<style>
 export function clearDocument() {
 	location.href =
 		"chrome-extension://gegfekkmkeefhonpmckhmdaalebkhkjo/block-site-redirect.html";
-	// document.body.innerHTML = HTML;
-	// document.head.innerHTML = HEADER;
 }

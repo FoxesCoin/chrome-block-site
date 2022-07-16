@@ -10,14 +10,11 @@ export const isExistSite = (sites: string[]) =>
 	sites.some((site) => HOST.includes(site));
 
 class BlockSite {
-	#isHaveActiveTimeline = false;
 	#connectedTimelines: Timeline[][] = [];
 	#intervalId: any;
 
 	#blockSiteByTime() {
-		if (this.#isHaveActiveTimeline) {
-			window.location.href = URL;
-		}
+		window.location.href = URL;
 	}
 
 	#activateSiteTimer = () => {
@@ -31,10 +28,6 @@ class BlockSite {
 	};
 
 	#setIsHaveActiveTimeline(newValue: boolean) {
-		if (newValue === this.#isHaveActiveTimeline) {
-			return;
-		}
-		this.#isHaveActiveTimeline = newValue;
 		if (newValue) {
 			return this.#activateSiteTimer();
 		}

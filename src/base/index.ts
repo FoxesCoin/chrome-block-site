@@ -6,7 +6,6 @@ async function loadDocument() {
 	BlockSiteManager.checkProfiles(profiles);
 }
 
-// TODO update to profile functional
 chrome.storage.onChanged.addListener((changes) => {
 	const newValue = changes?.profiles?.newValue;
 	const oldValue = changes?.profiles?.oldValue;
