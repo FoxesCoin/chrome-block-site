@@ -1,0 +1,34 @@
+@import "variable";
+
+#site-list {
+	padding: 0.5rem;
+	display: grid;
+	gap: 0.5rem;
+}
+
+.site {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	border: $white-border;
+	border-radius: 0.5rem;
+	padding: 0.25rem;
+
+	&__text {
+		font-weight: bold;
+	}
+
+	&__cross {
+		cursor: pointer;
+		width: 2rem;
+		height: 2rem;
+		padding: 0.5rem;
+
+		border-radius: 50%;
+		transition: all 0.2s;
+
+		&:hover {
+			background-color: #999;
+		}
+	}
+}

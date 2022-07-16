@@ -2,10 +2,23 @@
 <html>
 	<head>
 		<link rel="stylesheet" href="popup.css" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+			rel="stylesheet"
+		/>
 	</head>
 	<body>
+		<div class="profile-wrapper">
+			<button class="profile-wrapper__button profile-wrapper__button_before">
+				<
+			</button>
+			<div id="profile"></div>
+			<button class="profile-wrapper__button profile-wrapper__button_next">
+				>
+			</button>
+		</div>
 		<button id="add-site">Add this site.</button>
-		<script src="../utils/utils.js"></script>
 		<script src="popup.js"></script>
 	</body>
 </html>

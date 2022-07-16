@@ -1,0 +1,70 @@
+$profile: #75b6cc;
+$profile-hover: #71cbe9;
+
+$profile-active: rgb(138, 184, 70);
+$profile-active-hover: rgb(129, 194, 31);
+
+.profile {
+	width: 100%;
+	height: 3rem;
+	background-color: $profile;
+
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 0.5rem 1rem;
+
+	cursor: pointer;
+
+	&:hover {
+		box-shadow: 0px 0px 15px 0px $profile-hover;
+	}
+
+	&__action-bar > * + * {
+		margin-left: 0.5rem;
+	}
+
+	&_active {
+		background-color: $profile-active;
+
+		&:hover {
+			background-color: $profile-active-hover;
+			box-shadow: 0px 0px 15px 0px $profile-active-hover;
+		}
+	}
+
+	&__input {
+		font-weight: bold;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		min-width: 1rem;
+		flex: 1 0;
+
+		&_editable {
+			border-bottom: 2px solid black;
+		}
+	}
+
+	&:first-of-type:last-of-type &__icon_remove {
+		display: none;
+	}
+
+	&__icon {
+		width: 1.5rem;
+		height: 1.5rem;
+		position: relative;
+		border-radius: 50%;
+		padding: 0.25rem;
+		cursor: pointer;
+		flex: 1 0 auto;
+
+		&:hover {
+			background-color: lightblue;
+		}
+	}
+
+	&_active &__icon {
+		flex: unset;
+	}
+}

@@ -1,0 +1,81 @@
+@import "variable";
+
+body {
+	display: grid;
+	grid-template-columns: 20rem 1fr;
+
+	font-size: 16px;
+	column-gap: 1rem;
+
+	background-color: $black;
+	color: $white;
+	font-family: "Roboto", sans-serif;
+
+	width: 100%;
+}
+
+.content {
+	display: grid;
+	grid-template-rows: max-content 10rem max-content 1fr;
+	row-gap: 1rem;
+	padding: 1rem;
+}
+
+.title {
+	font-weight: bold;
+	font-size: 1.5rem;
+}
+
+.tab {
+	display: flex;
+	height: 40px;
+
+	&__item {
+		flex: 1 1 auto;
+		text-align: center;
+		font-size: 20px;
+		font-weight: bold;
+		padding: 0.5rem 1rem;
+		cursor: pointer;
+		border-top-right-radius: 0.5rem;
+		border-top-left-radius: 0.5rem;
+		border-bottom: $white-border;
+		transition: all 0.2s;
+
+		&:hover {
+			background-color: #bbb;
+		}
+
+		&_active {
+			border-bottom: 1px solid transparent;
+			border-top: $white-border;
+			border-left: $white-border;
+			border-right: $white-border;
+		}
+	}
+}
+
+.button_dark {
+	font-weight: bold;
+	font-size: 1.25rem;
+	background-color: transparent;
+	border: $white-border;
+	padding: 0.25rem 1rem;
+	border-radius: 0.25rem;
+	transition: all 0.2s;
+	color: $white;
+	align-self: center;
+
+	&:hover {
+		background-color: rgb(167, 167, 167);
+	}
+}
+
+.profile-wrapper {
+	display: grid;
+	grid-auto-rows: min-content;
+
+	&__add {
+		margin: 0.5rem;
+	}
+}

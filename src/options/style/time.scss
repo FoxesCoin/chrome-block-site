@@ -1,0 +1,91 @@
+@import "variable";
+
+.calendar {
+	display: flex;
+	gap: 0.5rem;
+}
+
+.day__checkbox:checked ~ .day__text {
+	background-color: #128585;
+}
+
+.day__text {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border: 2px solid $white;
+	width: 2rem;
+	height: 2rem;
+	border-radius: 50%;
+	font-weight: bold;
+}
+
+.day__checkbox {
+	display: none;
+}
+
+.time {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+
+	&__input,
+	&__day {
+		border: $white-border;
+		padding: 0.25rem 0.5rem;
+		background-color: transparent;
+		border-radius: 0.5rem;
+		color: $white;
+		font-weight: bold;
+	}
+
+	&__input {
+		max-width: 250px;
+	}
+
+	&__day {
+		width: 295px;
+	}
+}
+
+.form {
+	display: none;
+	height: 120px;
+
+	border-bottom: $white-border;
+	border-left: $white-border;
+	border-right: $white-border;
+	padding: 0.5rem;
+
+	&_active {
+		display: grid;
+		grid-template-columns: 1fr max-content;
+		grid-template-rows: 1fr 1fr;
+		gap: 1rem;
+		grid-template-areas:
+			"time submit"
+			"input submit";
+	}
+
+	&__time {
+		grid-area: time;
+		display: flex;
+	}
+
+	&__input {
+		grid-area: input;
+		display: flex;
+	}
+
+	&__title {
+		margin: 0.5rem;
+		font-size: 1.5em;
+		font-weight: bold;
+		width: 200px;
+	}
+
+	&__submit {
+		grid-area: submit;
+		margin-right: 3rem;
+	}
+}

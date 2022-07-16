@@ -1,0 +1,49 @@
+@import "variable";
+
+#add-site__input {
+	border: $white-border;
+	height: 2rem;
+	padding: 0.25rem 1rem;
+	border-radius: 0.75rem;
+	width: 100%;
+	background-color: transparent;
+	color: $white;
+
+	&::placeholder {
+		color: rgb(211, 211, 211);
+		font-weight: bold;
+	}
+}
+
+#add-site__button {
+	position: absolute;
+	height: 1.5rem;
+	right: 0.5rem;
+	padding: 0.25rem 0.5rem;
+	border-radius: 0.25rem;
+	top: calc(50% - 0.75rem);
+	background-color: transparent;
+	margin: 0;
+
+	color: rgb(255, 0, 0);
+
+	&:disabled {
+		background-color: $white;
+		color: #999;
+	}
+}
+
+.add-site {
+	position: relative;
+	width: 100%;
+
+	&__error {
+		color: rgb(255, 0, 0);
+		transition: 0.2s all;
+
+		&:empty {
+			opacity: 0;
+			transform: translateY(-100%);
+		}
+	}
+}
