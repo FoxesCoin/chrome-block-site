@@ -1,9 +1,5 @@
 import equal from "fast-deep-equal";
 
-export type Nullable<T> = {
-	[P in keyof T]: T[P] | null;
-};
-
 interface UpdateProfiles {
 	oldProfile: ProfileData | null;
 	newProfile: ProfileData | null;
@@ -15,7 +11,7 @@ export interface Timer {
 }
 
 export interface Daily extends Timer {
-	day: string;
+	day: number;
 	startDate: string;
 }
 

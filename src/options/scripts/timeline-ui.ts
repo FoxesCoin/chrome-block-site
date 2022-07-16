@@ -4,13 +4,13 @@ import { ProfileManager } from "./profile";
 const timelinesList = document.getElementById("timeline")!;
 
 const WEEK_DAYS = [
-	{ value: 0, letter: "M" },
-	{ value: 1, letter: "T" },
-	{ value: 2, letter: "W" },
-	{ value: 3, letter: "T" },
-	{ value: 4, letter: "F" },
-	{ value: 5, letter: "S" },
+	{ value: 1, letter: "M" },
+	{ value: 2, letter: "T" },
+	{ value: 3, letter: "W" },
+	{ value: 4, letter: "T" },
+	{ value: 5, letter: "F" },
 	{ value: 6, letter: "S" },
+	{ value: 0, letter: "S" },
 ];
 
 function createTime(time: string) {

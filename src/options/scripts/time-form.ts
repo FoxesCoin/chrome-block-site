@@ -1,4 +1,5 @@
-import { createDateByTime, Daily, Nullable, Weekly } from "../../utils";
+import { NotNullable, Nullable, Omit } from "../../types";
+import { createDateByTime, Daily, Weekly } from "../../utils";
 import { ProfileManager } from "./profile";
 import { createToday, dailyForm, weeklyForm } from "./utils";
 
@@ -49,7 +50,7 @@ weeklyForm.addEventListener("submit", (event) => {
 });
 
 type DailyFormData = Nullable<Omit<Daily, "startDate">>;
-type DailyFormCorrectData = Record<keyof DailyFormData, string>;
+type DailyFormCorrectData = NotNullable<DailyFormData>;
 dailyForm.addEventListener("submit", (event) => {
 	event.preventDefault();
 
@@ -62,7 +63,7 @@ dailyForm.addEventListener("submit", (event) => {
 	const timeline = {
 		start: data.get("start"),
 		end: data.get("end"),
-		day: data.get("day"),
+		day: +(data.get("day") ?? 0),
 	} as DailyFormData;
 
 	Object.entries(timeline).filter(([_, value]) => value !== null);

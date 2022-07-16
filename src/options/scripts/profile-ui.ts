@@ -45,6 +45,16 @@ const createProfileUI = (profileData: ProfileData) => {
 		profile.classList.add("profile_active");
 	}
 
+	const endRename = () => {
+		if (!input.innerHTML.trim()) {
+			return alert("New name should have minimum 1 character.");
+		}
+
+		input.classList.remove("profile__input_editable");
+		input.removeAttribute("contentEditable");
+		ProfileManager.renameProfile(id, input.innerHTML);
+	};
+
 	edit.addEventListener("click", (event) => {
 		event.stopPropagation();
 		event.preventDefault();
@@ -54,13 +64,14 @@ const createProfileUI = (profileData: ProfileData) => {
 			input.focus();
 			return;
 		}
-		if (!input.innerHTML.trim()) {
-			return alert("New name should have minimum 1 character.");
-		}
+		endRename();
+	});
 
-		input.classList.remove("profile__input_editable");
-		input.removeAttribute("contentEditable");
-		ProfileManager.renameProfile(id, input.innerHTML);
+	input.addEventListener("keydown", (event: KeyboardEvent) => {
+		if (event.key !== "Enter") {
+			return;
+		}
+		endRename();
 	});
 
 	const actionBar = document.createElement("div");

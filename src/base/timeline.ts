@@ -25,8 +25,7 @@ const isTimeBetweenInterval = (timer: Timer) => {
 };
 
 const isIncludeWeekly = (weekly: Weekly) => {
-	const today = new Date();
-	const weekday = today.getDay();
+	const weekday = new Date().getDay();
 	const isActiveDay = weekly.days.some((day) => day === weekday);
 
 	return isActiveDay && isTimeBetweenInterval(weekly);
